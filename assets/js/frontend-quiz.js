@@ -20,8 +20,75 @@
   const app      = document.getElementById('efu-sjt-app');
   const progressBar = document.getElementById('efu-sjt-progress-bar');
   const dotsWrap    = document.getElementById('efu-sjt-step-dots');
+  const DRAFT_URL   = cfg.draftUrl || '';
+  const DRAFT_KEY   = 'efu_sjt_draft';
 
   if (!root || !app) return;
+
+  // ── Draft: localStorage + server sync ────────────────
+  let _saveTimer = null;
+
+  function draftGet() {
+    try { return JSON.parse(localStorage.getItem(DRAFT_KEY)) || null; }
+    catch(e) { return null; }
+  }
+
+  function draftToken() {
+    const d = draftGet();
+    if (d && d.token) return d.token;
+    const buf = new Uint8Array(16);
+    crypto.getRandomValues(buf);
+    return Array.from(buf, b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function draftSave() {
+    if (currentStep < 1) return;
+    const draft = {
+      token:     draftToken(),
+      step:      currentStep,
+      userData:  { ...userData },
+      responses: { ...responses },
+      savedAt:   new Date().toISOString(),
+    };
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(e) {}
+    clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(() => _draftPush(draft), 2000);
+  }
+
+  function draftClear() {
+    const d = draftGet();
+    localStorage.removeItem(DRAFT_KEY);
+    if (d && d.token && DRAFT_URL) {
+      fetch(DRAFT_URL + '/' + encodeURIComponent(d.token), {
+        method: 'DELETE',
+        headers: { 'X-WP-Nonce': REST_NONCE },
+      }).catch(() => {});
+    }
+  }
+
+  function _draftPush(draft) {
+    if (!DRAFT_URL) return;
+    fetch(DRAFT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': REST_NONCE },
+      body:    JSON.stringify(draft),
+    }).then(r => r.ok && _showSaved()).catch(() => {});
+  }
+
+  function _showSaved() {
+    const el = document.getElementById('efu-autosave-msg');
+    if (!el) return;
+    el.textContent = '✓ Progress saved';
+    el.classList.add('visible');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('visible'), 2500);
+  }
+
+  // Inject autosave indicator
+  const _autoEl = document.createElement('div');
+  _autoEl.id = 'efu-autosave-msg';
+  _autoEl.className = 'efu-autosave-msg';
+  root.appendChild(_autoEl);
 
   // ── Scoring (mirrors class-scorer.php) ──────────────
   function scoreCompetency(comp) {
@@ -69,6 +136,7 @@
     currentStep = step;
     updateProgress();
     renderStep();
+    draftSave();
   }
 
   function next() { if (currentStep < TOTAL_STEPS) goTo(currentStep + 1); }
@@ -289,6 +357,7 @@
       responses[key] = val;
       updateCounter(el, scenario);
       refreshStepperButtons(input);
+      draftSave();
     });
 
     // ── Direct typing in the input ───────────────────
@@ -302,6 +371,7 @@
         responses[key] = val;
         updateCounter(el, scenario);
         refreshStepperButtons(input);
+        draftSave();
       });
 
       input.addEventListener('blur', () => {
@@ -472,6 +542,7 @@
       const data = await res.json();
 
       if (res.ok && data.success) {
+        draftClear();
         renderThankYou(data.name || userData.name, data);
       } else {
         const errEl = el.querySelector('#efu-submit-error');
@@ -574,6 +645,75 @@
     window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 40, behavior: 'smooth' });
   }
 
+  // ── Resume page ──────────────────────────────────────
+  function renderResumePage(draft) {
+    dotsWrap.innerHTML      = '';
+    progressBar.style.width = '0%';
+    app.innerHTML           = '';
+
+    const when = (() => {
+      if (!draft.savedAt) return 'previously';
+      const diff = Date.now() - new Date(draft.savedAt).getTime();
+      const mins = Math.round(diff / 60000);
+      if (mins < 2)  return 'just now';
+      if (mins < 60) return mins + ' minutes ago';
+      const hrs = Math.round(mins / 60);
+      if (hrs < 24)  return hrs + ' hour' + (hrs > 1 ? 's' : '') + ' ago';
+      return new Date(draft.savedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    })();
+
+    const stepLabel = (() => {
+      const s = draft.step || 0;
+      if (s === 1) return 'Your Details';
+      if (s >= 2 && s <= pillars.length + 1) return 'Pillar ' + (s - 1) + ' of ' + pillars.length;
+      if (s > pillars.length + 1) return 'Review & Submit';
+      return 'Step ' + s;
+    })();
+
+    const logoHtml = LOGO_URL
+      ? `<div class="efu-welcome-logo"><img src="${escHtml(LOGO_URL)}" alt="EFU Life" onerror="this.parentNode.innerHTML='<div class=efu-logo-fallback>EFU</div>'"></div>`
+      : '';
+
+    const el = document.createElement('div');
+    el.className = 'efu-resume-page';
+    el.innerHTML = `
+      ${logoHtml}
+      <div class="efu-resume-icon">&#8617;</div>
+      <h2 class="efu-resume-heading">Continue Your Assessment</h2>
+      ${draft.userData && draft.userData.name ? `<p class="efu-resume-name">${escHtml(draft.userData.name)}</p>` : ''}
+      <div class="efu-resume-meta">
+        <span><strong>Last saved:</strong> ${escHtml(when)}</span>
+        <span><strong>Progress:</strong> ${escHtml(stepLabel)}</span>
+      </div>
+      <div class="efu-resume-actions">
+        <button class="efu-btn-primary efu-resume-continue">Continue Assessment &rarr;</button>
+        <button class="efu-btn-secondary efu-resume-restart">Start Fresh</button>
+      </div>
+    `;
+
+    el.querySelector('.efu-resume-continue').addEventListener('click', () => {
+      responses   = { ...(draft.responses || {}) };
+      userData    = { ...(draft.userData  || {}) };
+      currentStep = draft.step || 0;
+      app.innerHTML = '';
+      updateProgress();
+      renderStep();
+    });
+
+    el.querySelector('.efu-resume-restart').addEventListener('click', () => {
+      if (!confirm('Start fresh? Your saved progress will be deleted.')) return;
+      draftClear();
+      responses   = {};
+      userData    = {};
+      currentStep = 0;
+      app.innerHTML = '';
+      updateProgress();
+      renderStep();
+    });
+
+    app.appendChild(el);
+  }
+
   // ── Utilities ────────────────────────────────────────
   function escHtml(str) {
     return String(str)
@@ -585,7 +725,12 @@
   }
 
   // ── Boot ─────────────────────────────────────────────
-  updateProgress();
-  renderStep();
+  const _savedDraft = draftGet();
+  if (_savedDraft && _savedDraft.step > 0) {
+    renderResumePage(_savedDraft);
+  } else {
+    updateProgress();
+    renderStep();
+  }
 
 })();

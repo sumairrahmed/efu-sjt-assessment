@@ -69,6 +69,7 @@ class EFU_SJT_Shortcode {
 		wp_localize_script( 'efu-sjt-quiz', 'efuSJT', [
 			'assessment'   => $assessment,
 			'restUrl'      => rest_url( 'efu-sjt/v1/submit' ),
+			'draftUrl'     => rest_url( 'efu-sjt/v1/draft' ),
 			'nonce'        => wp_create_nonce( 'wp_rest' ),
 			'logoUrl'      => $logo_url,
 			'pillarsCount' => count( $assessment['pillars'] ?? [] ),

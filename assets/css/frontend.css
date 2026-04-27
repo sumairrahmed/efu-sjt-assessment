@@ -27,6 +27,7 @@
   padding: 0 16px 48px;
   font-size: 16px;
   line-height: 1.6;
+  position: relative;
 }
 
 /* ── Progress bar ─────────────────────────────────── */
@@ -630,6 +631,72 @@
   color: #7a0040;
   margin-top: 16px;
   font-family: 'Poppins', sans-serif;
+}
+
+/* ── Autosave indicator ───────────────────────────── */
+.efu-autosave-msg {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--efu-green);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-autosave-msg.visible { opacity: 1; }
+
+/* ── Resume page ──────────────────────────────────── */
+.efu-resume-page {
+  text-align: center;
+  padding: 56px 24px;
+}
+
+.efu-resume-icon {
+  font-size: 2.8rem;
+  color: var(--efu-dark);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.efu-resume-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--efu-dark);
+  margin: 0 0 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-resume-name {
+  font-size: 1rem;
+  color: #4a6070;
+  margin: 0 0 20px;
+}
+
+.efu-resume-meta {
+  display: inline-flex;
+  gap: 24px;
+  background: var(--efu-light);
+  border: 1px solid var(--efu-muted);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.88rem;
+  color: #4a6070;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.efu-resume-meta strong { color: var(--efu-dark); }
+
+.efu-resume-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* ── Thank you screen ─────────────────────────────── */

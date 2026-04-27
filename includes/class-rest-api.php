@@ -10,6 +10,76 @@ class EFU_SJT_REST_API {
 			'permission_callback' => '__return_true',
 			'args'                => self::submit_args(),
 		] );
+
+		register_rest_route( 'efu-sjt/v1', '/draft', [
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => [ __CLASS__, 'handle_save_draft' ],
+			'permission_callback' => '__return_true',
+		] );
+
+		register_rest_route( 'efu-sjt/v1', '/draft/(?P<token>[a-zA-Z0-9_\-]{10,80})', [
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ __CLASS__, 'handle_load_draft' ],
+				'permission_callback' => '__return_true',
+			],
+			[
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => [ __CLASS__, 'handle_delete_draft' ],
+				'permission_callback' => '__return_true',
+			],
+		] );
+	}
+
+	public static function handle_save_draft( WP_REST_Request $request ): WP_REST_Response {
+		$token = sanitize_key( $request->get_param( 'token' ) ?? '' );
+		if ( ! $token || strlen( $token ) < 10 ) {
+			return new WP_REST_Response( [ 'success' => false ], 400 );
+		}
+
+		$step     = absint( $request->get_param( 'step' ) ?? 0 );
+		$raw_user = (array) ( $request->get_param( 'userData' ) ?? [] );
+		$userData = [
+			'name'       => sanitize_text_field( $raw_user['name']       ?? '' ),
+			'email'      => sanitize_email(      $raw_user['email']      ?? '' ),
+			'age'        => absint(              $raw_user['age']        ?? 0  ),
+			'gender'     => sanitize_text_field( $raw_user['gender']     ?? '' ),
+			'department' => sanitize_text_field( $raw_user['department'] ?? '' ),
+		];
+
+		$responses = [];
+		foreach ( (array) ( $request->get_param( 'responses' ) ?? [] ) as $k => $v ) {
+			$clean = sanitize_key( $k );
+			if ( $clean ) $responses[ $clean ] = absint( $v );
+		}
+
+		$data = [
+			'token'     => $token,
+			'step'      => $step,
+			'userData'  => $userData,
+			'responses' => $responses,
+			'savedAt'   => current_time( 'mysql' ),
+		];
+
+		set_transient( 'efu_sjt_d_' . $token, $data, 30 * DAY_IN_SECONDS );
+		return new WP_REST_Response( [ 'success' => true ], 200 );
+	}
+
+	public static function handle_load_draft( WP_REST_Request $request ): WP_REST_Response {
+		$token = sanitize_key( $request->get_param( 'token' ) ?? '' );
+		$data  = $token ? get_transient( 'efu_sjt_d_' . $token ) : false;
+
+		if ( ! $data ) {
+			return new WP_REST_Response( [ 'success' => false, 'message' => 'No saved session found.' ], 404 );
+		}
+
+		return new WP_REST_Response( [ 'success' => true, 'data' => $data ], 200 );
+	}
+
+	public static function handle_delete_draft( WP_REST_Request $request ): WP_REST_Response {
+		$token = sanitize_key( $request->get_param( 'token' ) ?? '' );
+		if ( $token ) delete_transient( 'efu_sjt_d_' . $token );
+		return new WP_REST_Response( [ 'success' => true ], 200 );
 	}
 
 	private static function submit_args(): array {
@@ -257,7 +327,6 @@ class EFU_SJT_REST_API {
   <!-- FOOTER -->
   <tr>
     <td class="footer-pad" style="background-color:#0f3549;border-radius:0 0 16px 16px;padding:24px 48px;text-align:center;">
-      <img src="https://funverks.com/wp-content/uploads/2023/05/cropped-Funverks-Design.png" alt="Funverks" width="110" style="opacity:0.65;margin:0 auto 10px;" />
       <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">
         Developed by <a href="https://funverks.com" style="color:rgba(255,255,255,0.45);text-decoration:none;">Funverks</a> &nbsp;&middot;&nbsp;
         &copy; ' . $year . ' Funverks. All rights reserved.<br>
