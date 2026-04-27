@@ -3,7 +3,7 @@
  * Plugin Name: EFU SJT Assessment
  * Plugin URI:  https://trout.digital/
  * Description: HOD Leadership Situational Judgment Assessment for EFU Life.
- * Version:     1.1.3
+ * Version:     1.1.6
  * Author:      Sumair Ahmed | Trout Digital
  * License:     GPL-2.0+
  * Text Domain: efu-sjt-assessment
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EFU_SJT_VERSION',    '1.1.3' );
+define( 'EFU_SJT_VERSION',    '1.1.6' );
 define( 'EFU_SJT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'EFU_SJT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'EFU_SJT_TABLE',      'efu_sjt_submissions' );
