@@ -1,0 +1,837 @@
+/* EFU SJT Assessment — Frontend Styles
+   Scoped under .efu-sjt-wrap for zero theme bleed */
+
+:root {
+  --efu-dark:   #144864;
+  --efu-accent: #d90e78;
+  --efu-white:  #ffffff;
+  --efu-light:  #f0f5f8;
+  --efu-muted:  #e8edf1;
+  --efu-text:   #1a2a35;
+  --efu-green:  #1dab6e;
+  --efu-shadow: 0 2px 12px rgba(20,72,100,0.10);
+  --efu-radius: 12px;
+}
+
+.efu-sjt-wrap *,
+.efu-sjt-wrap *::before,
+.efu-sjt-wrap *::after {
+  box-sizing: border-box;
+}
+
+.efu-sjt-wrap {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--efu-text);
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── Progress bar ─────────────────────────────────── */
+#efu-sjt-progress-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: var(--efu-muted);
+  border-radius: 3px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+#efu-sjt-progress-bar {
+  height: 100%;
+  background: var(--efu-dark);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* ── Step indicator dots ──────────────────────────── */
+#efu-sjt-step-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.efu-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--efu-muted);
+  transition: background 0.3s, transform 0.2s;
+  cursor: default;
+}
+
+.efu-dot.done   { background: var(--efu-dark); }
+.efu-dot.active { background: var(--efu-accent); transform: scale(1.25); }
+
+/* ── Welcome step ─────────────────────────────────── */
+.efu-step-welcome {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.efu-welcome-logo img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 24px;
+}
+
+.efu-welcome-logo .efu-logo-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--efu-dark);
+  color: var(--efu-white);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-step-welcome h1 {
+  font-size: 2rem;
+  color: var(--efu-dark);
+  margin: 0 0 16px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-step-welcome p {
+  color: #4a6070;
+  max-width: 540px;
+  margin: 0 auto 32px;
+  font-size: 1.05rem;
+}
+
+.efu-instruction-list {
+  list-style: none;
+  padding: 0;
+  max-width: 480px;
+  margin: 0 auto 32px;
+  text-align: left;
+}
+
+.efu-instruction-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--efu-muted);
+  font-size: 0.95rem;
+  color: var(--efu-text);
+}
+
+.efu-instruction-list li:last-child { border-bottom: none; }
+
+.efu-instr-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--efu-dark);
+  color: var(--efu-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 1px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Form fields (step 1) ─────────────────────────── */
+.efu-step-info {
+  background: var(--efu-white);
+  border: 1px solid var(--efu-muted);
+  border-radius: var(--efu-radius);
+  padding: 32px;
+  box-shadow: var(--efu-shadow);
+}
+
+.efu-step-info h2 {
+  font-size: 1.4rem;
+  color: var(--efu-dark);
+  margin: 0 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--efu-dark);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.efu-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.efu-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.efu-form-field.full-width { grid-column: 1 / -1; }
+
+.efu-form-field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--efu-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-form-field input,
+.efu-form-field select {
+  padding: 10px 14px;
+  border: 1px solid var(--efu-muted);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  color: var(--efu-text);
+  background: var(--efu-white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.efu-form-field input:focus,
+.efu-form-field select:focus {
+  border-color: var(--efu-dark);
+  box-shadow: 0 0 0 3px rgba(20,72,100,0.12);
+}
+
+.efu-form-field input.invalid,
+.efu-form-field select.invalid { border-color: var(--efu-accent); }
+
+.efu-field-error {
+  font-size: 0.78rem;
+  color: var(--efu-accent);
+  margin-top: 2px;
+  min-height: 18px;
+}
+
+/* ── Pillar step ──────────────────────────────────── */
+.efu-pillar-step-header { margin-bottom: 28px; }
+
+.efu-pillar-step-header h2 {
+  font-size: 1.5rem;
+  color: var(--efu-dark);
+  margin: 0 0 8px;
+  padding-left: 16px;
+  border-left: 5px solid var(--efu-dark);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.efu-pillar-step-header p {
+  font-size: 0.85rem;
+  color: #6a8090;
+  margin: 0;
+  padding-left: 21px;
+}
+
+.efu-scenario-card {
+  background: var(--efu-white);
+  border: 1px solid var(--efu-muted);
+  border-radius: var(--efu-radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--efu-shadow);
+}
+
+.efu-scenario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.efu-scenario-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--efu-accent);
+  flex-shrink: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-point-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--efu-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--efu-text);
+  transition: background 0.3s, color 0.3s;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-point-counter.valid  { background: #d4f5e6; color: var(--efu-green); }
+.efu-point-counter.invalid { background: #fde6f0; color: var(--efu-accent); }
+
+.efu-counter-icon { font-size: 1rem; }
+
+.efu-scenario-text {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--efu-text);
+  margin-bottom: 20px;
+  background: var(--efu-light);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--efu-dark);
+}
+
+.efu-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.efu-option-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--efu-muted);
+  border-radius: 8px;
+  background: var(--efu-white);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.efu-option-row:focus-within {
+  border-color: var(--efu-dark);
+  background: #f8fbfd;
+}
+
+.efu-option-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--efu-dark);
+  color: var(--efu-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-option-text {
+  font-size: 0.9rem;
+  color: var(--efu-text);
+  line-height: 1.55;
+}
+
+.efu-option-input-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.efu-option-input-wrap label {
+  font-size: 0.68rem;
+  color: #8aa0ae;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Stepper (+/− buttons) ────────────────────────── */
+.efu-pts-stepper {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--efu-muted);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.efu-option-row:focus-within .efu-pts-stepper {
+  border-color: var(--efu-dark);
+}
+
+.efu-pts-btn {
+  width: 34px;
+  height: 40px;
+  background: var(--efu-light);
+  border: 0px !important;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--efu-dark);
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-pts-btn:hover:not(:disabled) {
+  background: var(--efu-dark);
+  color: var(--efu-white);
+}
+
+.efu-pts-btn:active:not(:disabled) {
+  background: #0d3349;
+  color: var(--efu-white);
+}
+
+.efu-pts-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.efu-pts-minus {
+  border-right: 1.5px solid var(--efu-muted);
+}
+
+.efu-pts-plus {
+  border-left: 1.5px solid var(--efu-muted);
+}
+
+/* Hide native number spinners */
+.efu-option-pts::-webkit-inner-spin-button,
+.efu-option-pts::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.efu-option-pts::placeholder {
+  color: #bfcdd6;
+  font-weight: 400;
+}
+
+.efu-option-pts {
+  width: 44px;
+  height: 40px;
+  padding: 0 4px;
+  text-align: center;
+  border: none;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--efu-dark);
+  font-family: 'Poppins', sans-serif;
+  background: var(--efu-white);
+  outline: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── Competency header within pillar ─────────────── */
+.efu-competency-header { margin: 28px 0 14px; }
+
+.efu-competency-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--efu-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-competency-header h3::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--efu-accent);
+  flex-shrink: 0;
+}
+
+/* ── Review step ──────────────────────────────────── */
+.efu-step-review {
+  background: var(--efu-white);
+  border: 1px solid var(--efu-muted);
+  border-radius: var(--efu-radius);
+  padding: 32px;
+  box-shadow: var(--efu-shadow);
+}
+
+.efu-step-review h2 {
+  font-size: 1.4rem;
+  color: var(--efu-dark);
+  margin: 0 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--efu-dark);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.efu-review-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.efu-review-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--efu-muted);
+  font-size: 0.93rem;
+}
+
+.efu-review-table td:first-child {
+  font-weight: 600;
+  color: var(--efu-dark);
+  width: 140px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-pillar-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.efu-pillar-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--efu-light);
+  font-size: 0.88rem;
+  color: var(--efu-text);
+}
+
+.efu-check-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.efu-check-icon.ok  { background: var(--efu-green); color: #fff; }
+.efu-check-icon.err { background: var(--efu-accent); color: #fff; }
+
+/* ── Buttons ──────────────────────────────────────── */
+.efu-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  background: var(--efu-accent);
+  color: var(--efu-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  text-decoration: none;
+  outline: none;
+  letter-spacing: 0.2px;
+}
+
+.efu-btn-primary:hover  { background: #b8096a; }
+.efu-btn-primary:active { transform: scale(0.98); }
+.efu-btn-primary:disabled { background: #c0c8cc; cursor: not-allowed; }
+
+.efu-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: transparent;
+  color: var(--efu-dark);
+  border: 2px solid var(--efu-dark);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+
+.efu-btn-secondary:hover {
+  background: var(--efu-dark);
+  color: var(--efu-white);
+}
+
+.efu-step-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  gap: 12px;
+}
+
+.efu-step-nav-right { margin-left: auto; }
+
+/* ── Spinner ──────────────────────────────────────── */
+.efu-spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: efu-spin 0.7s linear infinite;
+}
+
+@keyframes efu-spin { to { transform: rotate(360deg); } }
+
+/* ── Error / validation banners ───────────────────── */
+.efu-error-banner {
+  background: #fde6f0;
+  border: 1px solid #f5a0c5;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #7a0040;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-validation-summary {
+  background: #fde6f0;
+  border-left: 4px solid var(--efu-accent);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: #7a0040;
+  margin-top: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Thank you screen ─────────────────────────────── */
+.efu-thankyou {
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.efu-thankyou-logo img {
+  height: 72px;
+  width: auto;
+  margin-bottom: 24px;
+  object-fit: contain;
+}
+
+.efu-thankyou-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--efu-green);
+  color: #fff;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.efu-thankyou-heading {
+  font-size: 2rem;
+  color: var(--efu-dark);
+  font-weight: 700;
+  margin: 0 0 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-thankyou-msg {
+  font-size: 1rem;
+  color: #4a6070;
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* ── Result card (thank you page) ─────────────────── */
+.efu-result-card {
+  display: inline-block;
+  background: var(--efu-white);
+  border: 2px solid var(--efu-muted);
+  border-radius: var(--efu-radius);
+  padding: 24px 40px;
+  min-width: 240px;
+  text-align: center;
+  margin: 0 auto 28px;
+}
+
+.efu-result-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #8aa0ae;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.efu-result-level {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.efu-result-score {
+  font-size: 1rem;
+  color: var(--efu-dark);
+  font-weight: 500;
+}
+
+/* ── Pillar breakdown (thank you page) ────────────── */
+.efu-ty-pillars {
+  text-align: left;
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+
+.efu-ty-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #8aa0ae;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+.efu-ty-pillar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.efu-ty-pillar-name {
+  font-size: 0.85rem;
+  color: var(--efu-dark);
+  font-weight: 500;
+  padding: 7px 12px 7px 0;
+  width: 42%;
+  vertical-align: middle;
+}
+
+.efu-ty-pillar-bar-cell {
+  padding: 7px 12px 7px 0;
+  vertical-align: middle;
+}
+
+.efu-ty-bar-wrap {
+  height: 8px;
+  background: var(--efu-muted);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.efu-ty-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.7s ease;
+}
+
+.efu-ty-pillar-score {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--efu-dark);
+  white-space: nowrap;
+  padding: 7px 0;
+  text-align: right;
+  vertical-align: middle;
+  width: 36px;
+}
+
+/* ── Mobile ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  .efu-sjt-wrap {
+    padding: 0 12px 32px;
+    font-size: 14px; /* ~12% reduction from 16px */
+  }
+
+  /* Headings */
+  .efu-step-welcome h1       { font-size: 1.4rem; }
+  .efu-pillar-step-header h2 { font-size: 1.2rem; }
+  .efu-step-info h2,
+  .efu-step-review h2        { font-size: 1.15rem; }
+  .efu-competency-header h3  { font-size: 0.9rem; }
+  .efu-thankyou-heading      { font-size: 1.5rem; }
+
+  /* Body copy */
+  .efu-scenario-text  { font-size: 0.83rem; }
+  .efu-option-text    { font-size: 0.8rem; }
+  .efu-thankyou-msg   { font-size: 0.9rem; }
+  .efu-point-counter  { font-size: 0.75rem; padding: 3px 9px; }
+
+  /* Forms */
+  .efu-form-grid { grid-template-columns: 1fr; }
+  .efu-form-field input,
+  .efu-form-field select { font-size: 0.9rem; }
+
+  /* Options grid — stack badge + text, stepper full-width below */
+  .efu-option-row {
+    grid-template-columns: 32px 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+
+  .efu-option-input-wrap {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  /* Bigger touch targets for +/- on mobile */
+  .efu-pts-btn {
+    width: 40px;
+    height: 44px;
+    font-size: 1.4rem;
+  }
+
+  .efu-option-pts {
+    width: 48px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
+  /* Navigation */
+  .efu-step-nav           { flex-direction: column; }
+  .efu-step-nav-right     { margin-left: 0; width: 100%; }
+  .efu-btn-primary,
+  .efu-btn-secondary      { width: 100%; justify-content: center; }
+
+  /* Layout */
+  .efu-pillar-checklist { grid-template-columns: 1fr; }
+  .efu-step-info,
+  .efu-step-review      { padding: 18px 14px; }
+  .efu-scenario-card    { padding: 14px; }
+  .efu-step-welcome     { padding: 32px 12px; }
+}

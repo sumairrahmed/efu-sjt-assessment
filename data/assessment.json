@@ -1,0 +1,1094 @@
+{
+  "meta": {
+    "title": "EFU Life HOD Situational Judgment Assessment",
+    "version": "1.0",
+    "total_items": 34,
+    "total_competencies": 17,
+    "total_pillars": 5,
+    "points_per_item": 10,
+    "min_points_per_option": 1,
+    "scoring": {
+      "formula": "(4 * L4_pts + 3 * L3_pts + 2 * L2_pts + 1 * L1_pts) / 20",
+      "bands": [
+        { "min": 1.0, "max": 1.9, "level": "Developing", "code": "L1" },
+        { "min": 2.0, "max": 2.6, "level": "Proficient", "code": "L2" },
+        { "min": 2.7, "max": 3.3, "level": "Advanced", "code": "L3" },
+        { "min": 3.4, "max": 4.0, "level": "Role Model", "code": "L4" }
+      ]
+    }
+  },
+  "pillars": [
+    {
+      "id": "growth_strategy",
+      "label": "Growth & Strategy",
+      "order": 1,
+      "competencies": [
+        {
+          "id": "enterprise_strategic_thinking",
+          "label": "Enterprise Strategic Thinking",
+          "order": 1,
+          "items": [
+            {
+              "id": "1_1a",
+              "order": 1,
+              "scenario": "The CEO has flagged a concern about EFU Life's slowing growth in the 35–45 age segment. You head a core function (e.g. Operations, Actuarial, or Marketing). In the next ExCo meeting, the item on segment strategy is open for discussion.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Come prepared with a view on what's driving the slowdown and how your function could contribute to a response, even outside your usual remit.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Contribute only when asked about your function's specific role, since segment strategy sits primarily with Sales and Marketing.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Propose an enterprise-wide perspective on the segment, including implications for product design, distribution, servicing, and risk — and advocate for coordinated ownership.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Share what your function can do to support whichever segment strategy is adopted by the business owners.",
+                  "level": 2
+                }
+              ]
+            },
+            {
+              "id": "1_1b",
+              "order": 2,
+              "scenario": "A new entrant is aggressively acquiring market share in takaful through a partnership model EFU Life has not prioritized. Your function is asked for input at a planning session.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Reframe the conversation around what the competitor's success reveals about the market, and shape an enterprise-level response with peers.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Explain how your function would support a response if leadership decides to pursue one.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Offer a point of view on whether and how EFU Life should respond, based on your function's vantage point.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Share what your function is currently doing; the competitive response is a business decision.",
+                  "level": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "direction_setting_prioritization",
+          "label": "Direction Setting & Prioritization",
+          "order": 2,
+          "items": [
+            {
+              "id": "1_2a",
+              "order": 3,
+              "scenario": "Your team has inherited a long list of carry-over initiatives from the previous year, plus three new strategic priorities from the CEO. Capacity is clearly insufficient for all of them.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Work through the full list; flag resourcing concerns if things slip.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Identify which carry-over initiatives to stop or defer, communicate the decisions, and refocus the team.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Negotiate for additional resources to deliver the expanded agenda.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Redefine the function's 12–18 month agenda around the new priorities, retire what no longer fits, and align the team's operating rhythm to it.",
+                  "level": 4
+                }
+              ]
+            },
+            {
+              "id": "1_2b",
+              "order": 4,
+              "scenario": "A team member proposes a well-intentioned improvement project that is legitimate but does not align with your top priorities for the year.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Explain why it does not fit this year's priorities and decline it, while acknowledging the thinking.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Use the conversation to re-anchor the team on the priorities and help the person redirect their energy to something on-strategy.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Approve it; good initiatives should not be discouraged.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Approve it with a caveat that top priorities must not be affected.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "strategic_execution_resource_allocation",
+          "label": "Strategic Execution & Resource Allocation",
+          "order": 3,
+          "items": [
+            {
+              "id": "1_3a",
+              "order": 5,
+              "scenario": "You are reviewing Q2 progress on strategic initiatives. One major workstream is at 40% of plan, another is on track, and a third is ahead.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Reallocate time, attention, and possibly resources across the three based on their strategic value and risk.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask each workstream lead to explain their status and present a recovery plan for the one behind.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Use the review to recalibrate the portfolio overall — stopping, accelerating, or resourcing workstreams based on changed conditions.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Focus your intervention on the workstream that is behind.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "1_3b",
+              "order": 6,
+              "scenario": "Your strategy requires two critical new capabilities. Neither exists in-house. Budget allows for one new hire or one external partner, not both.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Choose the option most likely to deliver a visible win this year.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Choose based on which capability creates longer-term functional advantage, even if slower to show results.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Defer the decision until more budget becomes available.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Design a phased plan that sequences both capabilities, using creative sourcing and reallocation to accelerate the second.",
+                  "level": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efficiency_service_delivery",
+      "label": "Efficiency & Service Delivery",
+      "order": 2,
+      "competencies": [
+        {
+          "id": "process_operational_discipline",
+          "label": "Process & Operational Discipline",
+          "order": 4,
+          "items": [
+            {
+              "id": "2_1a",
+              "order": 7,
+              "scenario": "Claim processing times have been inconsistent for the last two quarters. Some cases close in 48 hours; others take three weeks. Customer complaints are rising.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Instruct the team to accelerate pending cases and escalate exceptions to you.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Redesign processing as a predictable system with clear ownership, SLAs by case type, and self-correcting controls — so performance does not require your intervention.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Reinforce the existing SOP with the team and tighten monitoring.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Map the current process end-to-end, identify the bottlenecks, and redesign the flow.",
+                  "level": 3
+                }
+              ]
+            },
+            {
+              "id": "2_1b",
+              "order": 8,
+              "scenario": "A key process in your function depends heavily on one senior staff member. They have performed reliably for years but are now considering retirement.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Document the process, reduce single-person dependency, and cross-train multiple people.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask them to delay retirement until a successor is identified.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Start grooming a replacement to take over the role in time.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Use this as a trigger to audit all key-person dependencies across the function and systemically reduce them.",
+                  "level": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "performance_management_service_standards",
+          "label": "Performance Management & Service Standards",
+          "order": 5,
+          "items": [
+            {
+              "id": "2_2a",
+              "order": 9,
+              "scenario": "A new service standard has been announced. Three months in, you notice adherence is 78% while the target is 95%.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Remind the team of the target and monitor compliance.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Use leading indicators in the process to catch issues before they become non-compliance.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Embed the standard into the operating system so that meeting it is the default, not an act of compliance.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Investigate the reasons for non-adherence and address the top causes.",
+                  "level": 2
+                }
+              ]
+            },
+            {
+              "id": "2_2b",
+              "order": 10,
+              "scenario": "You have both a leading indicator (submission quality) and a lagging indicator (turnaround time). Leading is declining; lagging is still within SLA.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use the pattern to strengthen early-warning mechanisms across other processes in the function.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Act on the leading indicator now to prevent future SLA breaches.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Continue current focus since the SLA is still met.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Flag the leading indicator in the monthly review so the team is aware.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cost_resource_optimization",
+          "label": "Cost & Resource Optimization",
+          "order": 6,
+          "items": [
+            {
+              "id": "2_3a",
+              "order": 11,
+              "scenario": "Your function's headcount has grown 18% in three years; output has grown 12%.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Freeze hiring until output catches up with headcount.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Justify the gap by citing increased complexity and regulatory demands.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Identify which activities have grown disproportionately and examine whether automation or redesign could reduce effort.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Take a zero-based view of roles and activities, and restructure the function around current strategic priorities.",
+                  "level": 4
+                }
+              ]
+            },
+            {
+              "id": "2_3b",
+              "order": 12,
+              "scenario": "You identify savings worth PKR 25 million from a process redesign. The CFO suggests returning the savings to the bottom line.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Return the savings; a cost saving is a cost saving.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Make a structured case for reallocating the savings to strategic priorities, with expected returns quantified.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Propose reinvesting part of the savings in capability-building that will compound over time.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Return most of the savings and retain a small amount for team rewards.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "risk_governance",
+          "label": "Risk & Governance",
+          "order": 7,
+          "items": [
+            {
+              "id": "2_4a",
+              "order": 13,
+              "scenario": "Your internal audit has raised three findings in your function. Two are procedural; one points to a potential control gap that has not caused an incident yet.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use the findings to upgrade the function's overall control environment, including preventive controls for risks that have not yet materialized.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Close the two procedural findings quickly to demonstrate responsiveness.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Close all three by the due date.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Close the findings and examine whether similar control gaps may exist elsewhere in the function.",
+                  "level": 3
+                }
+              ]
+            },
+            {
+              "id": "2_4b",
+              "order": 14,
+              "scenario": "A senior leader from another function asks you to approve an exception to a control in your area to meet a quarter-end target.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Decline but offer to escalate to the CRO for a formal exception.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Decline, explain the risk rationale clearly, and offer an alternative path that meets the target without breaching the control.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Decline, and use the incident to examine whether target-setting is unintentionally creating pressure to compromise controls across the enterprise.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Decline the request and stay out of the discussion.",
+                  "level": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transformation_innovation",
+      "label": "Transformation & Innovation",
+      "order": 3,
+      "competencies": [
+        {
+          "id": "future_orientation_disruption_awareness",
+          "label": "Future-Orientation & Disruption Awareness",
+          "order": 8,
+          "items": [
+            {
+              "id": "3_1a",
+              "order": 15,
+              "scenario": "Bancassurance has been your main growth channel for a decade. Early signals suggest digital direct-to-customer models may disrupt this.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Lead a cross-functional re-examination of EFU Life's distribution strategy for the next decade.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Pilot a direct-to-customer capability while protecting the bancassurance business.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Monitor the digital direct-to-customer trend while continuing to invest in bancassurance.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Continue optimizing the current bancassurance channel given its proven performance.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "3_1b",
+              "order": 16,
+              "scenario": "You are asked, 'What in your function today will not work in three years?' You are expected to answer in the next ExCo meeting.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Identify two or three specific activities that are vulnerable and explain why.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Decline to speculate; three years is too far out to predict.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Present a clear view of the function's vulnerabilities, with a plan in place to address each, sequenced by urgency.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "List processes that are already showing signs of strain.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "digital_technology_enablement",
+          "label": "Digital & Technology Enablement",
+          "order": 9,
+          "items": [
+            {
+              "id": "3_2a",
+              "order": 17,
+              "scenario": "Your function relies heavily on a legacy system that works but limits flexibility. A new platform is available but would require 9–12 months of disruption to implement.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Wait for IT to propose a migration plan.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Lead a business case for modernization grounded in strategic value, not just system replacement.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Continue with the legacy system since it is functional.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Partner with IT to build a phased migration plan that manages the disruption.",
+                  "level": 3
+                }
+              ]
+            },
+            {
+              "id": "3_2b",
+              "order": 18,
+              "scenario": "A peer function has achieved 60% straight-through processing through automation. Your function is at 15%.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Note the benchmark; your function has different complexity.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Develop a roadmap to close the gap, with clear targets and milestones.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Meet with the peer to understand their approach.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Set an aspirational STP target for your function and redesign workflows to achieve it, using the peer function's experience as one input among several.",
+                  "level": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "experimentation_continuous_improvement",
+          "label": "Experimentation & Continuous Improvement",
+          "order": 10,
+          "items": [
+            {
+              "id": "3_3a",
+              "order": 19,
+              "scenario": "A team member proposes testing a small change to the customer onboarding flow. The business case is uncertain but the cost of testing is low.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Approve the test if it does not interfere with current operations.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask for a more detailed business case before approving.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Use the proposal to build a structured experimentation pipeline the function can run continuously.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Approve the test with clear success metrics and a defined learning window.",
+                  "level": 3
+                }
+              ]
+            },
+            {
+              "id": "3_3b",
+              "order": 20,
+              "scenario": "Your annual improvement program has delivered incremental gains but no step-change. Leadership asks why.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Shift the model from periodic improvement programs to embedded continuous experimentation in daily work.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Explain that current performance levels leave little room for step-change.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Examine whether the improvement approach itself is constraining outcomes and redesign it.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Commit to setting more ambitious improvement targets next year.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "collaboration",
+      "label": "Collaboration",
+      "order": 4,
+      "competencies": [
+        {
+          "id": "stakeholder_management_partnership",
+          "label": "Stakeholder Management & Partnership",
+          "order": 11,
+          "items": [
+            {
+              "id": "4_1a",
+              "order": 21,
+              "scenario": "A peer HOD has publicly criticized your function in an ExCo meeting. The criticism has some truth to it but was delivered without prior notice.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Acknowledge the valid points publicly and follow up with the peer directly to understand the concern.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Ask the CEO for a private conversation to clarify facts afterward.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Treat the situation as a signal that the peer relationship needs investment, and rebuild the partnership proactively.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Respond defensively in the meeting to protect the function's reputation.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "4_1b",
+              "order": 22,
+              "scenario": "A new HOD has joined a peer function. You have not yet met them.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Engage when a business need arises that involves their function.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Build a sustained partnership from day one, including shared rituals for ongoing alignment.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Send a welcome note and offer a meeting when convenient.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Proactively schedule a working conversation to understand their priorities and share yours.",
+                  "level": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cross_functional_outcome_delivery",
+          "label": "Cross-Functional Outcome Delivery",
+          "order": 12,
+          "items": [
+            {
+              "id": "4_2a",
+              "order": 23,
+              "scenario": "A customer experience initiative requires contributions from five functions. Progress has stalled because ownership is unclear.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Treat the stall as a signal that the enterprise lacks a model for cross-functional outcomes and advocate for one.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Propose that your function lead the initiative.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Deliver your piece well and let leadership resolve ownership.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Work with peers to clarify ownership, shared KPIs, and governance, then move forward.",
+                  "level": 3
+                }
+              ]
+            },
+            {
+              "id": "4_2b",
+              "order": 24,
+              "scenario": "Your function is asked to contribute to an enterprise initiative that will benefit EFU Life but offers no direct credit to your function.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Contribute actively because the enterprise outcome matters, regardless of credit.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Contribute the minimum required and focus on your function's own priorities.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Contribute what is asked without prioritizing it above your own agenda.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Advocate for the initiative, help design shared measures of success, and bring peers along.",
+                  "level": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "constructive_conflict_alignment",
+          "label": "Constructive Conflict & Alignment",
+          "order": 13,
+          "items": [
+            {
+              "id": "4_3a",
+              "order": 25,
+              "scenario": "In an ExCo meeting, you disagree with a decision that is about to be finalized. Others are ready to move on.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Stay silent to avoid slowing the meeting and raise concerns later.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "State your disagreement clearly, offer your reasoning, and let the group decide.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Ensure the disagreement is fully heard and resolved before commitment, so that alignment is real, not compliant.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Note your concern briefly for the minutes and go along with the decision.",
+                  "level": 2
+                }
+              ]
+            },
+            {
+              "id": "4_3b",
+              "order": 26,
+              "scenario": "Two of your team members have been in sustained conflict over responsibilities on a shared project. Work is being affected.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use the situation to examine whether the role design itself is creating the conflict and address root causes.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Facilitate a direct conversation between them to resolve the underlying issue.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Reassign one of them to reduce friction.",
+                  "level": 1
+                },
+                {
+                  "letter": "D",
+                  "text": "Meet with each separately to hear their perspective.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "people_culture",
+      "label": "People & Culture",
+      "order": 5,
+      "competencies": [
+        {
+          "id": "talent_development_succession",
+          "label": "Talent Development & Succession",
+          "order": 14,
+          "items": [
+            {
+              "id": "5_1a",
+              "order": 27,
+              "scenario": "You are asked to name a successor for your role. Realistically, no one on your team is ready today.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Name the most tenured team member as a provisional successor.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "State that no internal successor is currently available.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Identify the strongest candidate, define a development plan, and work it actively.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Build multiple successor pipelines from within and outside the team, with deliberate development and cross-exposure.",
+                  "level": 4
+                }
+              ]
+            },
+            {
+              "id": "5_1b",
+              "order": 28,
+              "scenario": "A strong performer on your team has been approached for a role in another function. You need them in your function.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Make the case for retaining them in their current role.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Actively encourage the move and use it as a signal of your commitment to enterprise talent development.",
+                  "level": 4
+                },
+                {
+                  "letter": "C",
+                  "text": "Support the move as a development opportunity, while planning for the gap.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Agree reluctantly if leadership supports the move.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "performance_culture_accountability",
+          "label": "Performance Culture & Accountability",
+          "order": 15,
+          "items": [
+            {
+              "id": "5_2a",
+              "order": 29,
+              "scenario": "At year-end calibration, you are asked to differentiate ratings across your team. Most of your team delivered well; differentiation feels arbitrary.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Differentiate slightly to meet calibration guidelines.",
+                  "level": 2
+                },
+                {
+                  "letter": "B",
+                  "text": "Differentiate meaningfully based on actual impact, even if conversations will be hard.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Use the calibration to strengthen how performance is discussed and measured throughout the year, not just at year-end.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Rate the team uniformly to reflect shared effort.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "5_2b",
+              "order": 30,
+              "scenario": "You are away for two weeks. On return, you find that performance slipped in your absence on issues the team should have been able to handle.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Increase oversight and reduce future absences when possible.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Clarify decision rights and expectations with the team.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Redesign the function so that performance is sustained by systems and accountability, not by your presence.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Identify why the team could not act and build the capability and authority needed.",
+                  "level": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "engagement_inclusion_culture_building",
+          "label": "Engagement, Inclusion & Culture Building",
+          "order": 16,
+          "items": [
+            {
+              "id": "5_3a",
+              "order": 31,
+              "scenario": "Your engagement score has dropped from 82 to 74 over two survey cycles. The rest of EFU Life is stable.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Treat the decline as a signal to examine the function's culture and leadership approach systemically.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Hold open conversations with the team to surface concerns and act visibly on them.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Investigate which specific dimensions have dropped and address them.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Question the validity of the survey methodology.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "5_3b",
+              "order": 32,
+              "scenario": "A team member raises, in confidence, concerns about inclusion in team decisions. Others have not raised similar concerns.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Examine team decision-making patterns honestly and make changes.",
+                  "level": 3
+                },
+                {
+                  "letter": "B",
+                  "text": "Thank them and suggest they raise it through formal channels.",
+                  "level": 1
+                },
+                {
+                  "letter": "C",
+                  "text": "Treat the feedback as a signal to invest in inclusion as a deliberate leadership practice.",
+                  "level": 4
+                },
+                {
+                  "letter": "D",
+                  "text": "Take note of the feedback and be more mindful going forward.",
+                  "level": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "self_awareness_leadership_presence",
+          "label": "Self-Awareness & Leadership Presence",
+          "order": 17,
+          "items": [
+            {
+              "id": "5_4a",
+              "order": 33,
+              "scenario": "In your 360 feedback, multiple respondents note that you interrupt others in meetings. You were not aware of this.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Use the feedback as a trigger for a broader examination of how your leadership impacts others.",
+                  "level": 4
+                },
+                {
+                  "letter": "B",
+                  "text": "Make an effort to be mindful in meetings going forward.",
+                  "level": 2
+                },
+                {
+                  "letter": "C",
+                  "text": "Acknowledge the pattern openly, seek specific examples, and work on it deliberately.",
+                  "level": 3
+                },
+                {
+                  "letter": "D",
+                  "text": "Consider the context; interruptions sometimes help move decisions.",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "id": "5_4b",
+              "order": 34,
+              "scenario": "Under heavy pressure last quarter, your directness came across to the team as harsh. You had not noticed.",
+              "options": [
+                {
+                  "letter": "A",
+                  "text": "Recognize that pressure affects everyone and move on.",
+                  "level": 1
+                },
+                {
+                  "letter": "B",
+                  "text": "Examine what triggers the shift and work on responding differently under pressure.",
+                  "level": 3
+                },
+                {
+                  "letter": "C",
+                  "text": "Apologize to the team and try to manage tone better.",
+                  "level": 2
+                },
+                {
+                  "letter": "D",
+                  "text": "Treat the feedback as fundamental, not cosmetic, and invest in sustained change including coaching if helpful.",
+                  "level": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
