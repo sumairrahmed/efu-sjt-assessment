@@ -162,6 +162,27 @@ class EFU_SJT_Submission {
 		];
 	}
 
+	public static function get_summary_stats(): array {
+		global $wpdb;
+		$table = self::table();
+
+		$total      = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $table ) );
+		$avg        = $total > 0
+			? (float) $wpdb->get_var( $wpdb->prepare( 'SELECT AVG(overall_score) FROM %i', $table ) )
+			: 0.0;
+		$this_month = (int) $wpdb->get_var( $wpdb->prepare(
+			'SELECT COUNT(*) FROM %i WHERE submitted_at >= %s',
+			$table,
+			gmdate( 'Y-m-01 00:00:00' )
+		) );
+
+		return [
+			'total'      => $total,
+			'avg_score'  => round( $avg, 2 ),
+			'this_month' => $this_month,
+		];
+	}
+
 	public static function get_all_for_export( array $filters = [] ) {
 		$args         = array_merge( $filters, [ 'per_page' => 9999, 'page' => 1 ] );
 		$result       = self::get_all( $args );

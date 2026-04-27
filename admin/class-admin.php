@@ -173,52 +173,68 @@ class EFU_SJT_Admin {
 
 		ob_start();
 		?>
-		<div class="efu-submission-detail">
-			<div class="efu-detail-header">
-				<h2><?php echo esc_html( $row->name ); ?></h2>
-				<span class="efu-level-badge <?php echo esc_attr( $badge_class ); ?>" style="font-size:1rem;padding:5px 14px;">
-					<?php echo esc_html( $row->overall_level ); ?> — <?php echo esc_html( number_format( $row->overall_score, 2 ) ); ?> / 4.00
+		<div class="efu-modal-header">
+			<div class="efu-modal-header-left">
+				<div class="efu-modal-name"><?php echo esc_html( $row->name ); ?></div>
+				<div class="efu-modal-meta">
+					<?php echo esc_html( $row->department ); ?> &bull;
+					<?php echo esc_html( $row->gender ); ?>, <?php echo esc_html( $row->age ); ?>
+				</div>
+			</div>
+			<div class="efu-modal-header-right">
+				<div class="efu-modal-score-num">
+					<?php echo esc_html( number_format( $row->overall_score, 2 ) ); ?><span>/4.00</span>
+				</div>
+				<span class="efu-level-badge <?php echo esc_attr( $badge_class ); ?>">
+					<?php echo esc_html( $row->overall_level ); ?>
 				</span>
 			</div>
-
-			<table class="efu-detail-table">
-				<tr><td>Email</td><td><?php echo esc_html( $row->email ); ?></td></tr>
-				<tr><td>Age</td><td><?php echo esc_html( $row->age ); ?></td></tr>
-				<tr><td>Gender</td><td><?php echo esc_html( $row->gender ); ?></td></tr>
-				<tr><td>Department</td><td><?php echo esc_html( $row->department ); ?></td></tr>
-				<tr><td>Submitted</td><td><?php echo esc_html( wp_date( 'd M Y, H:i', strtotime( $row->submitted_at ) ) ); ?></td></tr>
-			</table>
-
-			<?php if ( $pillar_scores ) : ?>
-			<h3 style="color:#144864;margin:20px 0 10px;font-size:1rem;">Pillar Scores</h3>
-			<table class="efu-detail-table">
-				<?php foreach ( $pillar_scores as $pid => $pscore ) : ?>
-				<tr>
-					<td><?php echo esc_html( $pillar_labels[ $pid ] ?? ucwords( str_replace( '_', ' ', $pid ) ) ); ?></td>
-					<td>
-						<div class="efu-score-bar-wrap">
-							<div class="efu-score-bar" style="width:<?php echo esc_attr( round( ( $pscore / 4 ) * 100, 1 ) ); ?>%"></div>
-							<span><?php echo esc_html( number_format( $pscore, 2 ) ); ?></span>
-						</div>
-					</td>
-				</tr>
-				<?php endforeach; ?>
-			</table>
-			<?php endif; ?>
 		</div>
 
-		<style>
-		.efu-submission-detail { font-family: 'Poppins', sans-serif; }
-		.efu-detail-header { display:flex; align-items:center; gap:16px; margin-bottom:16px; flex-wrap:wrap; }
-		.efu-detail-header h2 { margin:0; color:#144864; font-size:1.2rem; }
-		.efu-detail-table { width:100%; border-collapse:collapse; margin-bottom:8px; }
-		.efu-detail-table td { padding:8px 10px; border-bottom:1px solid #e8edf1; font-size:0.88rem; }
-		.efu-detail-table td:first-child { font-weight:600; color:#144864; width:130px; }
-		.efu-score-bar-wrap { display:flex; align-items:center; gap:10px; }
-		.efu-score-bar-wrap > div { flex:1; height:8px; background:#e8edf1; border-radius:4px; overflow:hidden; }
-		.efu-score-bar { height:100%; background:#144864; border-radius:4px; }
-		.efu-score-bar-wrap span { font-weight:600; color:#144864; font-size:0.85rem; width:34px; text-align:right; flex-shrink:0; }
-		</style>
+		<div class="efu-modal-body">
+			<div class="efu-modal-info-grid">
+				<div>
+					<span class="efu-info-label">Email</span>
+					<span class="efu-info-val"><?php echo esc_html( $row->email ); ?></span>
+				</div>
+				<div>
+					<span class="efu-info-label">Submitted</span>
+					<span class="efu-info-val"><?php echo esc_html( wp_date( 'd M Y, H:i', strtotime( $row->submitted_at ) ) ); ?></span>
+				</div>
+				<div>
+					<span class="efu-info-label">Age</span>
+					<span class="efu-info-val"><?php echo esc_html( $row->age ); ?></span>
+				</div>
+				<div>
+					<span class="efu-info-label">Gender</span>
+					<span class="efu-info-val"><?php echo esc_html( $row->gender ); ?></span>
+				</div>
+			</div>
+
+			<?php if ( $pillar_scores ) : ?>
+			<div class="efu-modal-section-title">Pillar Scores</div>
+			<?php foreach ( $pillar_scores as $pid => $pscore ) :
+				$pct    = round( ( $pscore / 4 ) * 100, 1 );
+				$plevel = EFU_SJT_Scorer::level_label( (float) $pscore );
+				$pclass = $level_class[ $plevel ] ?? '';
+			?>
+			<div class="efu-modal-pillar">
+				<div class="efu-modal-pillar-top">
+					<span class="efu-modal-pillar-name">
+						<?php echo esc_html( $pillar_labels[ $pid ] ?? ucwords( str_replace( '_', ' ', $pid ) ) ); ?>
+					</span>
+					<span class="efu-level-badge <?php echo esc_attr( $pclass ); ?>">
+						<?php echo esc_html( $plevel ); ?>
+					</span>
+					<span class="efu-modal-pillar-score"><?php echo esc_html( number_format( $pscore, 2 ) ); ?></span>
+				</div>
+				<div class="efu-modal-bar-wrap">
+					<div class="efu-modal-bar" style="width:<?php echo esc_attr( $pct ); ?>%"></div>
+				</div>
+			</div>
+			<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
 		<?php
 		wp_send_json_success( [ 'html' => ob_get_clean() ] );
 	}

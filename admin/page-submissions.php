@@ -48,11 +48,11 @@ class EFU_SJT_Submissions_Table extends WP_List_Table {
 	}
 
 	protected function column_name( $item ): string {
-		return '<strong>' . esc_html( $item->name ) . '</strong>';
+		return '<strong style="color:#144864;">' . esc_html( $item->name ) . '</strong>';
 	}
 
 	protected function column_email( $item ): string {
-		return esc_html( $item->email );
+		return '<span style="color:#4a6070;font-size:0.83rem;">' . esc_html( $item->email ) . '</span>';
 	}
 
 	protected function column_age( $item ): string {
@@ -83,15 +83,10 @@ class EFU_SJT_Submissions_Table extends WP_List_Table {
 	}
 
 	protected function column_submitted_at( $item ): string {
-		return esc_html( wp_date( 'd M Y, H:i', strtotime( $item->submitted_at ) ) );
+		return '<span style="color:#4a6070;font-size:0.82rem;">' . esc_html( wp_date( 'd M Y, H:i', strtotime( $item->submitted_at ) ) ) . '</span>';
 	}
 
 	protected function column_actions( $item ): string {
-		$delete_url = wp_nonce_url(
-			admin_url( 'admin-ajax.php?action=efu_sjt_delete_submission&id=' . $item->id ),
-			'efu_sjt_admin',
-			'nonce'
-		);
 		return '<a class="efu-btn-view button button-small" data-id="' . esc_attr( $item->id ) . '" href="#">View</a> '
 			. '<a class="efu-btn-delete button button-small button-link-delete" data-id="' . esc_attr( $item->id ) . '" href="#">Delete</a>';
 	}
@@ -133,9 +128,30 @@ $filters = [
 $table = new EFU_SJT_Submissions_Table( $filters );
 $table->prepare_items();
 
-$stats     = EFU_SJT_Submission::get_stats();
-$admin_nonce = wp_create_nonce( 'efu_sjt_admin' );
+$stats   = EFU_SJT_Submission::get_stats();
+$summary = EFU_SJT_Submission::get_summary_stats();
 
+// Derive top level
+$top_level       = '';
+$top_level_class = '';
+if ( ! empty( $stats['levels'] ) ) {
+	$max = 0;
+	foreach ( $stats['levels'] as $lv ) {
+		if ( (int) $lv->cnt > $max ) {
+			$max       = (int) $lv->cnt;
+			$top_level = $lv->overall_level;
+		}
+	}
+	$card_class_map  = [
+		'Developing' => 'efu-stat-accent',
+		'Proficient' => '',
+		'Advanced'   => 'efu-stat-green',
+		'Role Model' => 'efu-stat-orange',
+	];
+	$top_level_class = $card_class_map[ $top_level ] ?? '';
+}
+
+$admin_nonce   = wp_create_nonce( 'efu_sjt_admin' );
 $export_params = array_merge( $filters, [
 	'action' => 'efu_sjt_export_csv',
 	'nonce'  => $admin_nonce,
@@ -143,16 +159,45 @@ $export_params = array_merge( $filters, [
 $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) );
 ?>
 <div class="wrap efu-admin-wrap">
+
+	<!-- ── Header ─────────────────────────────────────── -->
 	<div class="efu-admin-header">
-		<img src="<?php echo esc_url( EFU_SJT_PLUGIN_URL . 'assets/img/efu-logo.png' ); ?>" alt="EFU Life" class="efu-admin-logo" onerror="this.style.display='none'">
-		<h1>HOD Assessment — Submissions</h1>
+		<div class="efu-brand-mark">
+			<span class="efu-mark-efu">EFU</span>
+			<span class="efu-mark-life">LIFE</span>
+		</div>
+		<div class="efu-header-text">
+			<h1>HOD Assessment</h1>
+			<p class="efu-header-sub">Submissions &amp; Analytics Dashboard</p>
+		</div>
 	</div>
 
+	<!-- ── Stat cards ─────────────────────────────────── -->
+	<div class="efu-stat-cards">
+		<div class="efu-stat-card">
+			<div class="efu-stat-label">Total Submissions</div>
+			<div class="efu-stat-value"><?php echo esc_html( number_format( $summary['total'] ) ); ?></div>
+		</div>
+		<div class="efu-stat-card efu-stat-green">
+			<div class="efu-stat-label">Average Score</div>
+			<div class="efu-stat-value"><?php echo $summary['total'] > 0 ? esc_html( number_format( $summary['avg_score'], 2 ) ) : '&mdash;'; ?></div>
+		</div>
+		<div class="efu-stat-card efu-stat-accent">
+			<div class="efu-stat-label">This Month</div>
+			<div class="efu-stat-value"><?php echo esc_html( number_format( $summary['this_month'] ) ); ?></div>
+		</div>
+		<div class="efu-stat-card <?php echo esc_attr( $top_level_class ); ?>">
+			<div class="efu-stat-label">Top Level</div>
+			<div class="efu-stat-value efu-stat-level-val"><?php echo $top_level ? esc_html( $top_level ) : '&mdash;'; ?></div>
+		</div>
+	</div>
+
+	<!-- ── Filter bar ─────────────────────────────────── -->
 	<form method="get" class="efu-filter-bar">
 		<input type="hidden" name="page" value="efu-sjt-assessment">
 		<div class="efu-filter-row">
-			<label>From <input type="date" name="date_from" value="<?php echo esc_attr( $filters['date_from'] ); ?>"></label>
-			<label>To <input type="date" name="date_to" value="<?php echo esc_attr( $filters['date_to'] ); ?>"></label>
+			<label>From<input type="date" name="date_from" value="<?php echo esc_attr( $filters['date_from'] ); ?>"></label>
+			<label>To<input type="date" name="date_to" value="<?php echo esc_attr( $filters['date_to'] ); ?>"></label>
 			<label>Gender
 				<select name="gender">
 					<option value="">All</option>
@@ -161,7 +206,7 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 					<?php endforeach; ?>
 				</select>
 			</label>
-			<label>Department <input type="text" name="department" value="<?php echo esc_attr( $filters['department'] ); ?>" placeholder="Search..."></label>
+			<label>Department<input type="text" name="department" value="<?php echo esc_attr( $filters['department'] ); ?>" placeholder="Search&hellip;"></label>
 			<label>Level
 				<select name="level">
 					<option value="">All</option>
@@ -170,42 +215,59 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 					<?php endforeach; ?>
 				</select>
 			</label>
-			<button type="submit" class="button button-primary">Filter</button>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=efu-sjt-assessment' ) ); ?>" class="button">Reset</a>
-			<a href="<?php echo esc_url( $export_url ); ?>" class="button efu-export-btn">&#x2193; Export CSV</a>
+			<div class="efu-filter-actions">
+				<button type="submit" class="button button-primary">Filter</button>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=efu-sjt-assessment' ) ); ?>" class="button">Reset</a>
+				<a href="<?php echo esc_url( $export_url ); ?>" class="button efu-export-btn">&#x2193;&nbsp;Export CSV</a>
+			</div>
 		</div>
 	</form>
 
+	<!-- ── Modal ──────────────────────────────────────── -->
 	<div id="efu-submission-modal" class="efu-modal" style="display:none;">
 		<div class="efu-modal-overlay"></div>
 		<div class="efu-modal-box">
-			<button class="efu-modal-close">&times;</button>
+			<button class="efu-modal-close" aria-label="Close">&times;</button>
 			<div id="efu-modal-content"></div>
 		</div>
 	</div>
 
-	<form method="post">
+	<!-- ── Table ──────────────────────────────────────── -->
+	<form method="post" class="efu-table-wrap">
 		<?php wp_nonce_field( 'efu_sjt_bulk', 'efu_bulk_nonce' ); ?>
 		<?php $table->display(); ?>
 	</form>
 
-	<hr class="efu-section-divider">
-	<h2 class="efu-section-title">Analytics Overview</h2>
+	<!-- ── Analytics section ──────────────────────────── -->
+	<div class="efu-section-header">
+		<div class="efu-section-accent-bar"></div>
+		<div>
+			<h2 class="efu-section-title">Analytics Overview</h2>
+			<p class="efu-section-subtitle">Aggregate insights across all submissions</p>
+		</div>
+	</div>
 
 	<div class="efu-charts-grid">
 		<div class="efu-chart-card">
-			<h3>Average Pillar Scores</h3>
+			<div class="efu-chart-card-header">
+				<span class="efu-chart-card-title">Average Pillar Scores</span>
+			</div>
 			<div id="chartPillar"></div>
 		</div>
 		<div class="efu-chart-card">
-			<h3>Level Distribution</h3>
+			<div class="efu-chart-card-header">
+				<span class="efu-chart-card-title">Level Distribution</span>
+			</div>
 			<div id="chartLevels"></div>
 		</div>
 		<div class="efu-chart-card efu-chart-full">
-			<h3>Submissions — Last 30 Days</h3>
+			<div class="efu-chart-card-header">
+				<span class="efu-chart-card-title">Submissions &mdash; Last 30 Days</span>
+			</div>
 			<div id="chartDaily"></div>
 		</div>
 	</div>
+
 </div>
 
 <script>
@@ -216,11 +278,10 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 		btn.addEventListener('click', e => {
 			e.preventDefault();
 			if ( !confirm('Delete this submission? This cannot be undone.') ) return;
-			const id = btn.dataset.id;
 			fetch(ajaxurl, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: 'action=efu_sjt_delete_submission&nonce=' + nonce + '&id=' + id,
+				body: 'action=efu_sjt_delete_submission&nonce=' + nonce + '&id=' + btn.dataset.id,
 			}).then(r => r.json()).then(d => {
 				if (d.success) btn.closest('tr').remove();
 				else alert('Error: ' + d.data);
@@ -231,23 +292,20 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 	document.querySelectorAll('.efu-btn-view').forEach(btn => {
 		btn.addEventListener('click', e => {
 			e.preventDefault();
-			const id = btn.dataset.id;
-			document.getElementById('efu-modal-content').innerHTML = '<p>Loading...</p>';
+			document.getElementById('efu-modal-content').innerHTML = '<div class="efu-modal-loading"><div class="efu-modal-spinner"></div></div>';
 			document.getElementById('efu-submission-modal').style.display = 'flex';
-			fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=efu_sjt_get_submission&nonce=' + nonce + '&id=' + id)
+			fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=efu_sjt_get_submission&nonce=' + nonce + '&id=' + btn.dataset.id)
 				.then(r => r.json())
 				.then(d => {
 					if (d.success) document.getElementById('efu-modal-content').innerHTML = d.data.html;
-					else document.getElementById('efu-modal-content').innerHTML = '<p>Error loading.</p>';
+					else document.getElementById('efu-modal-content').innerHTML = '<p style="padding:32px;color:#c00;text-align:center;">Could not load submission.</p>';
 				});
 		});
 	});
 
-	document.querySelector('.efu-modal-close')?.addEventListener('click', () => {
-		document.getElementById('efu-submission-modal').style.display = 'none';
-	});
-	document.querySelector('.efu-modal-overlay')?.addEventListener('click', () => {
-		document.getElementById('efu-submission-modal').style.display = 'none';
-	});
+	const closeModal = () => { document.getElementById('efu-submission-modal').style.display = 'none'; };
+	document.querySelector('.efu-modal-close')?.addEventListener('click', closeModal);
+	document.querySelector('.efu-modal-overlay')?.addEventListener('click', closeModal);
+	document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 })();
 </script>
