@@ -9,13 +9,7 @@
   const ORANGE = '#e09030';
   const FONT   = 'Poppins, -apple-system, sans-serif';
 
-  const PILLAR_LABELS = {
-    growth_strategy:        'Growth & Strategy',
-    customer_market_focus:  'Customer & Market',
-    people_culture:         'People & Culture',
-    operational_excellence: 'Operational Excellence',
-    innovation_change:      'Innovation & Change',
-  };
+  const PILLAR_LABELS = data.pillar_labels || {};
 
   const LEVEL_COLORS = {
     'Developing': ACCENT,

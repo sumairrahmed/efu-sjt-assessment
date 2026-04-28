@@ -167,7 +167,7 @@
       <p>This Situational Judgment Assessment evaluates your leadership effectiveness across five key pillars. Each scenario presents a real-world situation — allocate 10 points across four response options to indicate how likely you are to take each action.</p>
       <ul class="efu-instruction-list">
         <li><span class="efu-instr-icon">1</span>Complete all five sections — one pillar at a time.</li>
-        <li><span class="efu-instr-icon">2</span>For each scenario, distribute exactly 10 points across the four options — give at least 1 point to every option.</li>
+        <li><span class="efu-instr-icon">2</span>For each scenario, distribute exactly 10 points across the four options.</li>
         <li><span class="efu-instr-icon">3</span>There are no right or wrong answers — reflect your genuine leadership approach and priorities.</li>
         <li><span class="efu-instr-icon">4</span>The assessment takes approximately 25–35 minutes to complete.</li>
       </ul>
@@ -570,13 +570,7 @@
     progressBar.style.width = '100%';
     app.innerHTML           = '';
 
-    const PILLAR_LABELS = {
-      growth_strategy:        'Growth & Strategy',
-      customer_market_focus:  'Customer & Market Focus',
-      people_culture:         'People & Culture',
-      operational_excellence: 'Operational Excellence',
-      innovation_change:      'Innovation & Change',
-    };
+    const PILLAR_LABELS = Object.fromEntries(pillars.map(p => [p.id, p.label]));
     const LEVEL_COLORS = {
       'Developing': '#d90e78',
       'Proficient': '#144864',

@@ -228,23 +228,27 @@ class EFU_SJT_Google_Sheets {
 	}
 
 	public static function available_fields_with_labels(): array {
-		return [
-			'id'                            => 'ID',
-			'name'                          => 'Full Name',
-			'email'                         => 'Email',
-			'age'                           => 'Age',
-			'gender'                        => 'Gender',
-			'department'                    => 'Department',
-			'submitted_at'                  => 'Submitted At',
-			'overall_score'                 => 'Overall Score',
-			'overall_level'                 => 'Overall Level',
-			'pillar_scores'                 => 'All Pillar Scores (combined)',
-			'pillar_growth_strategy'        => 'Pillar: Growth & Strategy',
-			'pillar_customer_market_focus'  => 'Pillar: Customer & Market Focus',
-			'pillar_people_culture'         => 'Pillar: People & Culture',
-			'pillar_operational_excellence' => 'Pillar: Operational Excellence',
-			'pillar_innovation_change'      => 'Pillar: Innovation & Change',
+		$fields = [
+			'id'            => 'ID',
+			'name'          => 'Full Name',
+			'email'         => 'Email',
+			'age'           => 'Age',
+			'gender'        => 'Gender',
+			'department'    => 'Department',
+			'submitted_at'  => 'Submitted At',
+			'overall_score' => 'Overall Score',
+			'overall_level' => 'Overall Level',
+			'pillar_scores' => 'All Pillar Scores (combined)',
 		];
+
+		$assessment = EFU_SJT_Scorer::load_assessment();
+		if ( $assessment && ! empty( $assessment['pillars'] ) ) {
+			foreach ( $assessment['pillars'] as $pillar ) {
+				$fields[ 'pillar_' . $pillar['id'] ] = 'Pillar: ' . $pillar['label'];
+			}
+		}
+
+		return $fields;
 	}
 
 	public static function available_fields(): array {

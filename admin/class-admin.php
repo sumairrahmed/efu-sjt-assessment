@@ -102,7 +102,15 @@ class EFU_SJT_Admin {
 				EFU_SJT_VERSION,
 				true
 			);
-			$stats = EFU_SJT_Submission::get_stats();
+			$stats       = EFU_SJT_Submission::get_stats();
+			$assessment  = EFU_SJT_Scorer::load_assessment();
+			$chart_labels = [];
+			if ( $assessment && ! empty( $assessment['pillars'] ) ) {
+				foreach ( $assessment['pillars'] as $p ) {
+					$chart_labels[ $p['id'] ] = $p['label'];
+				}
+			}
+			$stats['pillar_labels'] = $chart_labels;
 			wp_localize_script( 'efu-sjt-admin-charts', 'efuChartData', $stats );
 		}
 
@@ -163,13 +171,13 @@ class EFU_SJT_Admin {
 		];
 		$badge_class = $level_class[ $row->overall_level ] ?? '';
 
-		$pillar_labels = [
-			'growth_strategy'        => 'Growth & Strategy',
-			'customer_market_focus'  => 'Customer & Market Focus',
-			'people_culture'         => 'People & Culture',
-			'operational_excellence' => 'Operational Excellence',
-			'innovation_change'      => 'Innovation & Change',
-		];
+		$pillar_labels = [];
+		$assessment    = EFU_SJT_Scorer::load_assessment();
+		if ( $assessment && ! empty( $assessment['pillars'] ) ) {
+			foreach ( $assessment['pillars'] as $p ) {
+				$pillar_labels[ $p['id'] ] = $p['label'];
+			}
+		}
 
 		ob_start();
 		?>
