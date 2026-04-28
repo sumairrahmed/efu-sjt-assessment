@@ -11,6 +11,5 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	<h2 class="efu-thankyou-heading">Thank you!</h2>
 	<p class="efu-thankyou-msg">
 		Your assessment has been submitted successfully.<br>
-		Our team will be in touch with your development report.
 	</p>
 </div>

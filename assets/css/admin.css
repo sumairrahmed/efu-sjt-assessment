@@ -17,29 +17,26 @@
 }
 
 /* ── Page wrapper ─────────────────────────────────── */
-.efu-admin-wrap { max-width: 1200px; }
+.efu-admin-wrap { max-width: 1400px; }
 
 /* ── Header ───────────────────────────────────────── */
 .efu-admin-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 24px;
-  padding: 22px 28px;
-  background: linear-gradient(130deg, #144864 0%, #1c6a88 100%);
-  border-radius: 14px;
-  position: relative;
-  overflow: hidden;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+    padding: 22px 28px;
+    background: linear-gradient(130deg, #144864 0%, #1c6a88 100%);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
 }
 
-.efu-admin-header::before {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 180px; height: 180px;
-  border-radius: 50%;
-  background: rgba(217,14,120,0.1);
-  pointer-events: none;
+.efu-admin-header h1{
+    color: white !important;
+    font-weight:600;
 }
 
 .efu-brand-mark {

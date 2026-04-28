@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "EFU Life HOD Situational Judgment Assessment",
-    "version": "1.0",
+    "version": "1.1",
     "total_items": 34,
     "total_competencies": 17,
     "total_pillars": 5,
@@ -14,6 +14,36 @@
         { "min": 2.0, "max": 2.6, "level": "Proficient", "code": "L2" },
         { "min": 2.7, "max": 3.3, "level": "Advanced", "code": "L3" },
         { "min": 3.4, "max": 4.0, "level": "Role Model", "code": "L4" }
+      ]
+    },
+    "level_descriptions": {
+      "Developing": [
+        "Demonstrates limited ownership in contributing to functional and enterprise priorities",
+        "Struggles to navigate ambiguity, resistance, or group dynamics across contexts",
+        "Shows minimal ability to influence alignment or contribute to outcomes across pillars",
+        "Remains task-focused with limited connection to strategic priorities or broader impact",
+        "Requires direction; limited evidence of readiness for higher-level responsibility"
+      ],
+      "Proficient": [
+        "Contributes to functional priorities, though alignment to enterprise priorities is inconsistent",
+        "Participates in discussions and decisions but may not consistently drive clarity or direction",
+        "Demonstrates basic ability to collaborate and support outcomes across pillars",
+        "Handles ambiguity and resistance with some structure, though often reactively",
+        "Impact is primarily within own scope, with limited influence beyond immediate context"
+      ],
+      "Advanced": [
+        "Proactively contributes to functional and enterprise priorities, with clear linkage to outcomes",
+        "Demonstrates structured thinking in navigating ambiguity, trade-offs and group dynamics",
+        "Actively drives alignment, decision-making and outcomes across multiple pillars",
+        "Balances short-term delivery with emerging strategic considerations",
+        "Influences others effectively within and across functions to achieve aligned outcomes"
+      ],
+      "Role Model": [
+        "Consistently operates with an enterprise-first mindset, shaping direction aligned to strategic priorities",
+        "Navigates complexity, ambiguity, and resistance with clarity, judgment, and composure",
+        "Drives alignment and outcomes across all pillars, influencing beyond immediate function",
+        "Integrates strategy, execution, collaboration and people impact seamlessly",
+        "Anticipates future needs and reframes challenges to strengthen enterprise outcomes"
       ]
     }
   },

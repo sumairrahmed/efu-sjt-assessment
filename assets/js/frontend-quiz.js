@@ -170,6 +170,7 @@
         <li><span class="efu-instr-icon">2</span>For each scenario, distribute exactly 10 points across the four options.</li>
         <li><span class="efu-instr-icon">3</span>There are no right or wrong answers — reflect your genuine leadership approach and priorities.</li>
         <li><span class="efu-instr-icon">4</span>The assessment takes approximately 25–35 minutes to complete.</li>
+        <li><span class="efu-instr-icon">5</span>The SJT is built on the EFU Life HoD OKR framework and its five strategic pillars; your results will be consolidated across these pillars to reflect alignment with strategic priorities.</li>
       </ul>
       <button class="efu-btn-primary efu-begin-btn">Begin Assessment &rarr;</button>
     `;
@@ -577,6 +578,7 @@
       'Advanced':   '#1dab6e',
       'Role Model': '#e09030',
     };
+    const LEVEL_DESCRIPTIONS = (assessment.meta && assessment.meta.level_descriptions) || {};
 
     const score       = data && data.overall_score != null ? parseFloat(data.overall_score) : null;
     const level       = data && data.overall_level ? data.overall_level : null;
@@ -623,15 +625,26 @@
         </div>`;
     }
 
+    let descHtml = '';
+    const descBullets = level ? LEVEL_DESCRIPTIONS[level] : null;
+    if (descBullets) {
+      const items = descBullets.map(b => `<li>${escHtml(b)}</li>`).join('');
+      descHtml = `
+        <div class="efu-ty-level-desc" style="border-left-color:${levelColor}">
+          <div class="efu-ty-section-title">What this level means</div>
+          <ul class="efu-ty-desc-list">${items}</ul>
+        </div>`;
+    }
+
     el.innerHTML = `
       ${logoHtml}
       <div class="efu-thankyou-icon">&#10003;</div>
       <h2 class="efu-thankyou-heading">Thank you, ${escHtml(name)}!</h2>
       ${scoreHtml}
       ${pillarHtml}
+      ${descHtml}
       <p class="efu-thankyou-msg">
         A results summary has been sent to <strong>${escHtml(userData.email || '')}</strong>.<br>
-        Our team will be in touch with your detailed development report.
       </p>
     `;
 

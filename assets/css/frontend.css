@@ -835,6 +835,42 @@
   width: 36px;
 }
 
+/* ── Level description (thank you page) ──────────── */
+.efu-ty-level-desc {
+  text-align: left;
+  max-width: 540px;
+  margin: 0 auto 28px;
+  background: var(--efu-white);
+  border: 1px solid var(--efu-muted);
+  border-left: 4px solid var(--efu-dark);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+}
+
+.efu-ty-desc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.efu-ty-desc-list li {
+  font-size: 0.85rem;
+  color: #4a6070;
+  line-height: 1.55;
+  padding: 5px 0 5px 18px;
+  position: relative;
+}
+
+.efu-ty-desc-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--efu-dark);
+  font-size: 0.75rem;
+  top: 6px;
+  opacity: 0.5;
+}
+
 /* ── Mobile ───────────────────────────────────────── */
 @media (max-width: 600px) {
   .efu-sjt-wrap {

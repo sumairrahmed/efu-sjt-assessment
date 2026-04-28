@@ -224,6 +224,17 @@ class EFU_SJT_REST_API {
 			'Role Model' => '3.4 &ndash; 4.0',
 		];
 
+		$assessment        = EFU_SJT_Scorer::load_assessment();
+		$level_descriptions = $assessment['meta']['level_descriptions'] ?? [];
+
+		$desc_items = '';
+		foreach ( $level_descriptions[ $level ] ?? [] as $bullet ) {
+			$desc_items .= '<li style="font-size:13px;color:#4a6070;line-height:1.65;padding:4px 0 4px 16px;position:relative;">'
+				. '<span style="position:absolute;left:0;color:#8aa0ae;">&ndash;</span>'
+				. esc_html( $bullet )
+				. '</li>';
+		}
+
 		$scale_rows = '';
 		foreach ( $scale_levels as $lvl => $range ) {
 			$is_active    = $lvl === $level;
@@ -314,6 +325,12 @@ class EFU_SJT_REST_API {
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>' . $scale_rows . '</tr>
         </table>
+      </div>
+
+      <!-- Level description -->
+      <div style="margin:0 0 32px;background:#f9fafb;border-left:4px solid ' . $color . ';border-radius:0 8px 8px 0;padding:18px 22px;">
+        <div style="font-size:10px;font-weight:700;color:#8aa0ae;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;">What This Level Means</div>
+        <ul style="margin:0;padding:0;list-style:none;">' . $desc_items . '</ul>
       </div>
 
       <p style="font-size:14px;color:#4a6070;line-height:1.7;">
