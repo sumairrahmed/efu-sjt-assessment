@@ -87,8 +87,10 @@ class EFU_SJT_Submissions_Table extends WP_List_Table {
 	}
 
 	protected function column_actions( $item ): string {
-		return '<a class="efu-btn-view button button-small" data-id="' . esc_attr( $item->id ) . '" href="#">View</a> '
-			. '<a class="efu-btn-delete button button-small button-link-delete" data-id="' . esc_attr( $item->id ) . '" href="#">Delete</a>';
+		return '<a class="efu-btn-view efu-icon-btn" data-id="' . esc_attr( $item->id ) . '" href="#" title="View" aria-label="View submission">'
+				. '<span class="dashicons dashicons-visibility"></span></a>'
+			. '<a class="efu-btn-delete efu-icon-btn" data-id="' . esc_attr( $item->id ) . '" href="#" title="Delete" aria-label="Delete submission">'
+				. '<span class="dashicons dashicons-trash"></span></a>';
 	}
 
 	protected function column_default( $item, $column_name ) {

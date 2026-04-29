@@ -260,26 +260,41 @@
 .level-advanced    { background: #e8f6ee; color: #0a5e30; border-color: #8dd8aa; }
 .level-rolemodel   { background: #fef5e0; color: #7a4000; border-color: #f5c870; }
 
-/* ── Row action buttons ───────────────────────────── */
-.efu-btn-view.button {
-  background: var(--efu-dark) !important;
-  color: #fff !important;
+/* ── Row action icon buttons ──────────────────────── */
+.efu-icon-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  vertical-align: middle;
+  margin: 0 1px;
+}
+
+.efu-icon-btn .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 1;
+}
+
+.efu-btn-view .dashicons   { color: var(--efu-dark); }
+.efu-btn-delete .dashicons { color: #b32d2e; }
+
+.efu-btn-view:hover {
+  background: #e8f0f5 !important;
   border-color: var(--efu-dark) !important;
-  font-size: 0.72rem !important;
-  padding: 3px 11px !important;
-  font-weight: 600 !important;
-  border-radius: 5px !important;
 }
 
-.efu-btn-view.button:hover {
-  background: #1c6a88 !important;
-  border-color: #1c6a88 !important;
-}
-
-.efu-btn-delete.button {
-  font-size: 0.72rem !important;
-  padding: 3px 11px !important;
-  border-radius: 5px !important;
+.efu-btn-delete:hover {
+  background: #fde8e8 !important;
+  border-color: #b32d2e !important;
 }
 
 /* ── Analytics section header ─────────────────────── */
