@@ -195,7 +195,9 @@ class EFU_SJT_REST_API {
 			$insert_data['name'],
 			$email,
 			$result['overall_score'],
-			$result['overall_level']
+			$result['overall_level'],
+			$result['pillar_scores'],
+			$result['scores']
 		);
 
 		return new WP_REST_Response(
@@ -211,7 +213,7 @@ class EFU_SJT_REST_API {
 		);
 	}
 
-	private static function send_results_email( string $name, string $email, float $score, string $level ): void {
+	private static function send_results_email( string $name, string $email, float $score, string $level, array $pillar_scores = [], array $competency_scores = [] ): void {
 		$subject       = 'Your HOD Leadership Assessment Results — EFU Life';
 		$score_str     = number_format( $score, 2 );
 		$score_percent = round( max( 0, min( 100, ( ( $score - 1 ) / 3 ) * 100 ) ), 1 );
@@ -233,6 +235,54 @@ class EFU_SJT_REST_API {
 				. '<span style="position:absolute;left:0;color:#8aa0ae;">&ndash;</span>'
 				. esc_html( $bullet )
 				. '</li>';
+		}
+
+		// Build pillar → competency breakdown
+		$breakdown_html = '';
+		if ( $assessment && ! empty( $assessment['pillars'] ) && ! empty( $pillar_scores ) ) {
+			$level_bg = [
+				'Developing' => '#d90e78',
+				'Proficient' => '#144864',
+				'Advanced'   => '#1dab6e',
+				'Role Model' => '#e09030',
+			];
+			$breakdown_html .= '<div style="margin:0 0 32px;">'
+				. '<div style="font-size:10px;font-weight:700;color:#8aa0ae;text-transform:uppercase;letter-spacing:3px;margin-bottom:14px;">Results by Pillar &amp; Competency</div>';
+
+			foreach ( $assessment['pillars'] as $pillar ) {
+				$p_score  = (float) ( $pillar_scores[ $pillar['id'] ] ?? 0 );
+				$p_level  = EFU_SJT_Scorer::level_label( $p_score );
+				$p_color  = $level_bg[ $p_level ] ?? '#144864';
+
+				$breakdown_html .= '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;border:1px solid #e8edf1;border-radius:8px;border-collapse:separate;overflow:hidden;">'
+					. '<tr>'
+					. '<td style="background:#0f3b52;padding:10px 14px;">'
+					. '<span style="color:#fff;font-size:12px;font-weight:700;">' . esc_html( $pillar['label'] ) . '</span>'
+					. '</td>'
+					. '<td style="background:#0f3b52;padding:10px 14px;text-align:right;white-space:nowrap;">'
+					. '<span style="display:inline-block;background:' . $p_color . ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;border-radius:20px;">' . esc_html( $p_level ) . '</span>'
+					. '<span style="color:rgba(255,255,255,0.85);font-size:12px;font-weight:700;margin-left:8px;">' . esc_html( number_format( $p_score, 2 ) ) . '</span>'
+					. '</td>'
+					. '</tr>';
+
+				foreach ( $pillar['competencies'] as $comp ) {
+					$c_score = (float) ( $competency_scores[ $comp['id'] ] ?? 0 );
+					$c_level = EFU_SJT_Scorer::level_label( $c_score );
+					$c_color = $level_bg[ $c_level ] ?? '#144864';
+
+					$breakdown_html .= '<tr>'
+						. '<td style="padding:8px 14px;border-top:1px solid #e8edf1;font-size:12px;color:#4a6070;">' . esc_html( $comp['label'] ) . '</td>'
+						. '<td style="padding:8px 14px;border-top:1px solid #e8edf1;text-align:right;white-space:nowrap;">'
+						. '<span style="display:inline-block;background:' . $c_color . ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;">' . esc_html( $c_level ) . '</span>'
+						. '<span style="color:#144864;font-size:12px;font-weight:700;margin-left:8px;">' . esc_html( number_format( $c_score, 2 ) ) . '</span>'
+						. '</td>'
+						. '</tr>';
+				}
+
+				$breakdown_html .= '</table>';
+			}
+
+			$breakdown_html .= '</div>';
 		}
 
 		$scale_rows = '';
@@ -332,6 +382,8 @@ class EFU_SJT_REST_API {
         <div style="font-size:10px;font-weight:700;color:#8aa0ae;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;">What This Level Means</div>
         <ul style="margin:0;padding:0;list-style:none;">' . $desc_items . '</ul>
       </div>
+
+      ' . $breakdown_html . '
 
       <p style="font-size:14px;color:#4a6070;line-height:1.7;">
         Warm regards,<br>

@@ -492,47 +492,108 @@
   letter-spacing: 0.7px;
   color: #8aa0ae;
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
-.efu-modal-pillar { margin-bottom: 14px; }
+/* ── Pillar group (card per pillar) ───────────────── */
+.efu-modal-pillar-group {
+  border: 1px solid var(--efu-muted);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
 
-.efu-modal-pillar-top {
+.efu-modal-pillar-hdr {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 7px;
+  padding: 10px 14px;
+  background: #0f3b52;
 }
 
-.efu-modal-pillar-name {
+.efu-modal-pillar-lbl {
   flex: 1;
-  font-size: 0.84rem;
-  color: var(--efu-dark);
-  font-weight: 500;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  min-width: 0;
 }
 
-.efu-modal-pillar-score {
-  font-size: 0.84rem;
+.efu-modal-pillar-hdr .efu-level-badge {
+  font-size: 0.62rem;
+  padding: 2px 8px;
+}
+
+.efu-modal-pillar-hdr .level-developing { background: rgba(217,14,120,0.85); color:#fff; border-color:transparent; }
+.efu-modal-pillar-hdr .level-proficient  { background: rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.3); }
+.efu-modal-pillar-hdr .level-advanced    { background: rgba(29,171,110,0.85); color:#fff; border-color:transparent; }
+.efu-modal-pillar-hdr .level-rolemodel   { background: rgba(224,144,48,0.85); color:#fff; border-color:transparent; }
+
+.efu-modal-pillar-score-num {
+  font-size: 0.9rem;
   font-weight: 800;
-  color: var(--efu-dark);
-  width: 34px;
-  text-align: right;
+  color: rgba(255,255,255,0.9);
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
+  width: 30px;
+  text-align: right;
 }
 
-.efu-modal-bar-wrap {
-  height: 6px;
+.efu-modal-pillar-bar-row {
+  height: 4px;
+  background: rgba(0,0,0,0.15);
+}
+
+.efu-modal-pillar-bar-fill {
+  height: 100%;
+  transition: width 0.6s ease;
+}
+
+/* ── Competency rows inside pillar group ──────────── */
+.efu-modal-comp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--efu-muted);
+  background: #fff;
+}
+
+.efu-modal-comp-row:nth-child(even) { background: #fafcfe; }
+
+.efu-modal-comp-name {
+  flex: 1;
+  font-size: 0.78rem;
+  color: #4a6070;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.efu-modal-comp-row .efu-level-badge { font-size: 0.6rem; padding: 2px 7px; flex-shrink: 0; }
+
+.efu-modal-comp-bar-wrap {
+  width: 70px;
+  height: 5px;
   background: var(--efu-muted);
   border-radius: 3px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.efu-modal-bar {
+.efu-modal-comp-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--efu-dark), #2c9ed8);
   border-radius: 3px;
-  transition: width 0.7s ease;
+  transition: width 0.6s ease;
+}
+
+.efu-modal-comp-score {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--efu-dark);
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Modal loading spinner */

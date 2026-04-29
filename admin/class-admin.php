@@ -162,6 +162,7 @@ class EFU_SJT_Admin {
 
 		$pillar_scores     = json_decode( $row->pillar_scores ?? '{}', true ) ?: [];
 		$competency_scores = json_decode( $row->scores ?? '{}', true ) ?: [];
+		$assessment        = EFU_SJT_Scorer::load_assessment();
 
 		$level_class = [
 			'Developing' => 'level-developing',
@@ -169,15 +170,13 @@ class EFU_SJT_Admin {
 			'Advanced'   => 'level-advanced',
 			'Role Model' => 'level-rolemodel',
 		];
+		$level_bar_color = [
+			'Developing' => '#d90e78',
+			'Proficient' => '#144864',
+			'Advanced'   => '#1dab6e',
+			'Role Model' => '#e09030',
+		];
 		$badge_class = $level_class[ $row->overall_level ] ?? '';
-
-		$pillar_labels = [];
-		$assessment    = EFU_SJT_Scorer::load_assessment();
-		if ( $assessment && ! empty( $assessment['pillars'] ) ) {
-			foreach ( $assessment['pillars'] as $p ) {
-				$pillar_labels[ $p['id'] ] = $p['label'];
-			}
-		}
 
 		ob_start();
 		?>
@@ -219,26 +218,42 @@ class EFU_SJT_Admin {
 				</div>
 			</div>
 
-			<?php if ( $pillar_scores ) : ?>
-			<div class="efu-modal-section-title">Pillar Scores</div>
-			<?php foreach ( $pillar_scores as $pid => $pscore ) :
-				$pct    = round( ( $pscore / 4 ) * 100, 1 );
-				$plevel = EFU_SJT_Scorer::level_label( (float) $pscore );
-				$pclass = $level_class[ $plevel ] ?? '';
+			<?php if ( $assessment && ! empty( $assessment['pillars'] ) ) : ?>
+			<div class="efu-modal-section-title">Results by Pillar &amp; Competency</div>
+
+			<?php foreach ( $assessment['pillars'] as $pillar ) :
+				$p_score = (float) ( $pillar_scores[ $pillar['id'] ] ?? 0 );
+				$p_level = EFU_SJT_Scorer::level_label( $p_score );
+				$p_class = $level_class[ $p_level ] ?? '';
+				$p_color = $level_bar_color[ $p_level ] ?? '#144864';
+				$p_pct   = round( ( $p_score / 4 ) * 100, 1 );
 			?>
-			<div class="efu-modal-pillar">
-				<div class="efu-modal-pillar-top">
-					<span class="efu-modal-pillar-name">
-						<?php echo esc_html( $pillar_labels[ $pid ] ?? ucwords( str_replace( '_', ' ', $pid ) ) ); ?>
-					</span>
-					<span class="efu-level-badge <?php echo esc_attr( $pclass ); ?>">
-						<?php echo esc_html( $plevel ); ?>
-					</span>
-					<span class="efu-modal-pillar-score"><?php echo esc_html( number_format( $pscore, 2 ) ); ?></span>
+			<div class="efu-modal-pillar-group">
+				<div class="efu-modal-pillar-hdr">
+					<span class="efu-modal-pillar-lbl"><?php echo esc_html( $pillar['label'] ); ?></span>
+					<span class="efu-level-badge <?php echo esc_attr( $p_class ); ?>"><?php echo esc_html( $p_level ); ?></span>
+					<span class="efu-modal-pillar-score-num"><?php echo esc_html( number_format( $p_score, 2 ) ); ?></span>
 				</div>
-				<div class="efu-modal-bar-wrap">
-					<div class="efu-modal-bar" style="width:<?php echo esc_attr( $pct ); ?>%"></div>
+				<div class="efu-modal-pillar-bar-row">
+					<div class="efu-modal-pillar-bar-fill" style="width:<?php echo esc_attr( $p_pct ); ?>%;background:<?php echo esc_attr( $p_color ); ?>;"></div>
 				</div>
+
+				<?php foreach ( $pillar['competencies'] as $comp ) :
+					$c_score = (float) ( $competency_scores[ $comp['id'] ] ?? 0 );
+					$c_level = EFU_SJT_Scorer::level_label( $c_score );
+					$c_class = $level_class[ $c_level ] ?? '';
+					$c_color = $level_bar_color[ $c_level ] ?? '#144864';
+					$c_pct   = round( ( $c_score / 4 ) * 100, 1 );
+				?>
+				<div class="efu-modal-comp-row">
+					<span class="efu-modal-comp-name"><?php echo esc_html( $comp['label'] ); ?></span>
+					<span class="efu-level-badge <?php echo esc_attr( $c_class ); ?>"><?php echo esc_html( $c_level ); ?></span>
+					<div class="efu-modal-comp-bar-wrap">
+						<div class="efu-modal-comp-bar" style="width:<?php echo esc_attr( $c_pct ); ?>%;background:<?php echo esc_attr( $c_color ); ?>;"></div>
+					</div>
+					<span class="efu-modal-comp-score"><?php echo esc_html( number_format( $c_score, 2 ) ); ?></span>
+				</div>
+				<?php endforeach; ?>
 			</div>
 			<?php endforeach; ?>
 			<?php endif; ?>
