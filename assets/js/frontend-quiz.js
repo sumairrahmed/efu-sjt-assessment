@@ -602,29 +602,6 @@
         </div>`;
     }
 
-    let pillarHtml = '';
-    if (pillarData && Object.keys(pillarData).length) {
-      const rows = Object.entries(pillarData).map(([pid, val]) => {
-        const pScore = parseFloat(val);
-        const pLabel = PILLAR_LABELS[pid] || pid;
-        const pct    = Math.round((pScore / 4) * 100);
-        const pLvl   = levelLabel(pScore);
-        const pColor = LEVEL_COLORS[pLvl] || '#144864';
-        return `<tr>
-          <td class="efu-ty-pillar-name">${escHtml(pLabel)}</td>
-          <td class="efu-ty-pillar-bar-cell">
-            <div class="efu-ty-bar-wrap"><div class="efu-ty-bar" style="width:${pct}%;background:${pColor}"></div></div>
-          </td>
-          <td class="efu-ty-pillar-score">${pScore.toFixed(2)}</td>
-        </tr>`;
-      }).join('');
-      pillarHtml = `
-        <div class="efu-ty-pillars">
-          <h3 class="efu-ty-section-title">Pillar Breakdown</h3>
-          <table class="efu-ty-pillar-table">${rows}</table>
-        </div>`;
-    }
-
     let descHtml = '';
     const descBullets = level ? LEVEL_DESCRIPTIONS[level] : null;
     if (descBullets) {
@@ -641,7 +618,6 @@
       <div class="efu-thankyou-icon">&#10003;</div>
       <h2 class="efu-thankyou-heading">Thank you, ${escHtml(name)}!</h2>
       ${scoreHtml}
-      ${pillarHtml}
       ${descHtml}
       <p class="efu-thankyou-msg">
         A results summary has been sent to <strong>${escHtml(userData.email || '')}</strong>.<br>

@@ -196,8 +196,7 @@ class EFU_SJT_REST_API {
 			$email,
 			$result['overall_score'],
 			$result['overall_level'],
-			$result['pillar_scores'],
-			$result['scores']
+			$result['pillar_scores']
 		);
 
 		return new WP_REST_Response(
@@ -213,7 +212,7 @@ class EFU_SJT_REST_API {
 		);
 	}
 
-	private static function send_results_email( string $name, string $email, float $score, string $level, array $pillar_scores = [], array $competency_scores = [] ): void {
+	private static function send_results_email( string $name, string $email, float $score, string $level, array $pillar_scores = [] ): void {
 		$subject       = 'Your HOD Leadership Assessment Results — EFU Life';
 		$score_str     = number_format( $score, 2 );
 		$score_percent = round( max( 0, min( 100, ( ( $score - 1 ) / 3 ) * 100 ) ), 1 );
@@ -237,8 +236,8 @@ class EFU_SJT_REST_API {
 				. '</li>';
 		}
 
-		// Build pillar → competency breakdown
-		$breakdown_html = '';
+		// Build pillar-only scores table
+		$pillar_html = '';
 		if ( $assessment && ! empty( $assessment['pillars'] ) && ! empty( $pillar_scores ) ) {
 			$level_bg = [
 				'Developing' => '#d90e78',
@@ -246,43 +245,41 @@ class EFU_SJT_REST_API {
 				'Advanced'   => '#1dab6e',
 				'Role Model' => '#e09030',
 			];
-			$breakdown_html .= '<div style="margin:0 0 32px;">'
-				. '<div style="font-size:10px;font-weight:700;color:#8aa0ae;text-transform:uppercase;letter-spacing:3px;margin-bottom:14px;">Results by Pillar &amp; Competency</div>';
-
+			$pillar_rows_html = '';
 			foreach ( $assessment['pillars'] as $pillar ) {
 				$p_score  = (float) ( $pillar_scores[ $pillar['id'] ] ?? 0 );
 				$p_level  = EFU_SJT_Scorer::level_label( $p_score );
 				$p_color  = $level_bg[ $p_level ] ?? '#144864';
-
-				$breakdown_html .= '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;border:1px solid #e8edf1;border-radius:8px;border-collapse:separate;overflow:hidden;">'
-					. '<tr>'
-					. '<td style="background:#0f3b52;padding:10px 14px;">'
-					. '<span style="color:#fff;font-size:12px;font-weight:700;">' . esc_html( $pillar['label'] ) . '</span>'
-					. '</td>'
-					. '<td style="background:#0f3b52;padding:10px 14px;text-align:right;white-space:nowrap;">'
-					. '<span style="display:inline-block;background:' . $p_color . ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;border-radius:20px;">' . esc_html( $p_level ) . '</span>'
-					. '<span style="color:rgba(255,255,255,0.85);font-size:12px;font-weight:700;margin-left:8px;">' . esc_html( number_format( $p_score, 2 ) ) . '</span>'
-					. '</td>'
-					. '</tr>';
-
-				foreach ( $pillar['competencies'] as $comp ) {
-					$c_score = (float) ( $competency_scores[ $comp['id'] ] ?? 0 );
-					$c_level = EFU_SJT_Scorer::level_label( $c_score );
-					$c_color = $level_bg[ $c_level ] ?? '#144864';
-
-					$breakdown_html .= '<tr>'
-						. '<td style="padding:8px 14px;border-top:1px solid #e8edf1;font-size:12px;color:#4a6070;">' . esc_html( $comp['label'] ) . '</td>'
-						. '<td style="padding:8px 14px;border-top:1px solid #e8edf1;text-align:right;white-space:nowrap;">'
-						. '<span style="display:inline-block;background:' . $c_color . ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;">' . esc_html( $c_level ) . '</span>'
-						. '<span style="color:#144864;font-size:12px;font-weight:700;margin-left:8px;">' . esc_html( number_format( $c_score, 2 ) ) . '</span>'
-						. '</td>'
-						. '</tr>';
-				}
-
-				$breakdown_html .= '</table>';
+				$p_pct    = round( max( 0, min( 100, ( $p_score / 4 ) * 100 ) ), 1 );
+				$pillar_rows_html .= '
+        <tr>
+          <td style="padding:10px 14px;border-top:1px solid #e8edf1;font-size:12px;color:#1a2a35;font-weight:500;">' . esc_html( $pillar['label'] ) . '</td>
+          <td style="padding:10px 14px;border-top:1px solid #e8edf1;width:120px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#e8edf1;border-radius:4px;height:6px;padding:0;">
+                  <div style="width:' . $p_pct . '%;height:6px;border-radius:4px;background:' . $p_color . ';"></div>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td style="padding:10px 14px;border-top:1px solid #e8edf1;text-align:right;white-space:nowrap;">
+            <span style="display:inline-block;background:' . $p_color . ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-right:6px;">' . esc_html( $p_level ) . '</span>
+            <span style="font-size:12px;font-weight:700;color:#144864;">' . esc_html( number_format( $p_score, 2 ) ) . '</span>
+          </td>
+        </tr>';
 			}
-
-			$breakdown_html .= '</div>';
+			$pillar_html = '
+      <div style="margin:0 0 32px;">
+        <div style="font-size:10px;font-weight:700;color:#8aa0ae;text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;">Pillar Scores</div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e8edf1;border-radius:8px;border-collapse:separate;overflow:hidden;">
+          <tr>
+            <td style="background:#0f3b52;padding:10px 14px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">Pillar</td>
+            <td style="background:#0f3b52;padding:10px 14px;"></td>
+            <td style="background:#0f3b52;padding:10px 14px;text-align:right;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">Level / Score</td>
+          </tr>' . $pillar_rows_html . '
+        </table>
+      </div>';
 		}
 
 		$scale_rows = '';
@@ -383,12 +380,76 @@ class EFU_SJT_REST_API {
         <ul style="margin:0;padding:0;list-style:none;">' . $desc_items . '</ul>
       </div>
 
-      ' . $breakdown_html . '
+      ' . $pillar_html . '
 
-      <p style="font-size:14px;color:#4a6070;line-height:1.7;">
-        Warm regards,<br>
-        <strong style="color:#144864;">EFU Life &mdash; HR &amp; Organizational Development</strong>
-      </p>
+      <!-- Static level guide -->
+      <div style="margin:0 0 32px;border:1px solid #e8edf1;border-radius:10px;overflow:hidden;">
+        <div style="background:#0f3b52;padding:12px 18px;">
+          <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:3px;">Level Guide</span>
+        </div>
+
+        <!-- L1 -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td style="padding:14px 18px;border-top:1px solid #e8edf1;background:#fff;">
+            <div style="margin-bottom:8px;">
+              <span style="display:inline-block;background:#d90e78;color:#fff;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">L1 &mdash; Developing</span>
+              <span style="font-size:10px;color:#9aacb8;margin-left:8px;">1.0 &ndash; 1.9</span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;">
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#d90e78;">&bull;</span>Demonstrates limited ownership in contributing to functional and enterprise priorities</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#d90e78;">&bull;</span>Struggles to navigate ambiguity, resistance, or group dynamics across contexts</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#d90e78;">&bull;</span>Shows minimal ability to influence alignment or contribute to outcomes across pillars</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#d90e78;">&bull;</span>Remains task-focused with limited connection to strategic priorities or broader impact</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#d90e78;">&bull;</span>Requires direction; limited evidence of readiness for higher-level responsibility</li>
+            </ul>
+          </td></tr>
+
+          <!-- L2 -->
+          <tr><td style="padding:14px 18px;border-top:1px solid #e8edf1;background:#fafcfe;">
+            <div style="margin-bottom:8px;">
+              <span style="display:inline-block;background:#144864;color:#fff;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">L2 &mdash; Proficient</span>
+              <span style="font-size:10px;color:#9aacb8;margin-left:8px;">2.0 &ndash; 2.6</span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;">
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#144864;">&bull;</span>Contributes to functional priorities, though alignment to enterprise priorities is inconsistent</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#144864;">&bull;</span>Participates in discussions and decisions but may not consistently drive clarity or direction</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#144864;">&bull;</span>Demonstrates basic ability to collaborate and support outcomes across pillars</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#144864;">&bull;</span>Handles ambiguity and resistance with some structure, though often reactively</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#144864;">&bull;</span>Impact is primarily within own scope, with limited influence beyond immediate context</li>
+            </ul>
+          </td></tr>
+
+          <!-- L3 -->
+          <tr><td style="padding:14px 18px;border-top:1px solid #e8edf1;background:#fff;">
+            <div style="margin-bottom:8px;">
+              <span style="display:inline-block;background:#1dab6e;color:#fff;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">L3 &mdash; Advanced</span>
+              <span style="font-size:10px;color:#9aacb8;margin-left:8px;">2.7 &ndash; 3.3</span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;">
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#1dab6e;">&bull;</span>Proactively contributes to functional and enterprise priorities, with clear linkage to outcomes</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#1dab6e;">&bull;</span>Demonstrates structured thinking in navigating ambiguity, trade-offs and group dynamics</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#1dab6e;">&bull;</span>Actively drives alignment, decision-making and outcomes across multiple pillars</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#1dab6e;">&bull;</span>Balances short-term delivery with emerging strategic considerations</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#1dab6e;">&bull;</span>Influences others effectively within and across functions to achieve aligned outcomes</li>
+            </ul>
+          </td></tr>
+
+          <!-- L4 -->
+          <tr><td style="padding:14px 18px;border-top:1px solid #e8edf1;background:#fafcfe;">
+            <div style="margin-bottom:8px;">
+              <span style="display:inline-block;background:#e09030;color:#fff;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">L4 &mdash; Role Model</span>
+              <span style="font-size:10px;color:#9aacb8;margin-left:8px;">3.4 &ndash; 4.0</span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;">
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#e09030;">&bull;</span>Consistently operates with an enterprise-first mindset, shaping direction aligned to strategic priorities</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#e09030;">&bull;</span>Navigates complexity, ambiguity, and resistance with clarity, judgment, and composure</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#e09030;">&bull;</span>Drives alignment and outcomes across all pillars, influencing beyond immediate function</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#e09030;">&bull;</span>Integrates strategy, execution, collaboration and people impact seamlessly</li>
+              <li style="font-size:12px;color:#4a6070;padding:2px 0 2px 14px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:#e09030;">&bull;</span>Anticipates future needs and reframes challenges to strengthen enterprise outcomes</li>
+            </ul>
+          </td></tr>
+        </table>
+      </div>
 
     </td>
   </tr>
