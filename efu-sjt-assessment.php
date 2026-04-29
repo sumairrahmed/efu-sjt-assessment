@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EFU_SJT_VERSION',    '1.2.0' );
+define( 'EFU_SJT_VERSION',    '1.2.2' );
 define( 'EFU_SJT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'EFU_SJT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'EFU_SJT_TABLE',      'efu_sjt_submissions' );
