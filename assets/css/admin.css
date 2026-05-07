@@ -858,3 +858,231 @@
 }
 
 .efu-sheets-status { max-width: 560px; margin-bottom: 20px; }
+
+/* ── Export modal ─────────────────────────────────── */
+.efu-export-modal-box {
+  max-width: 460px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.efu-export-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 24px 20px;
+  background: linear-gradient(130deg, #144864 0%, #1c6a88 100%);
+  border-radius: 14px 14px 0 0;
+}
+
+.efu-export-modal-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.efu-export-modal-icon .dashicons {
+  color: #fff;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.efu-export-modal-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 3px;
+  line-height: 1.2;
+}
+
+.efu-export-modal-sub {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.efu-export-modal-close {
+  margin-left: auto;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.efu-export-modal-close:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+.efu-export-modal-body {
+  padding: 24px 24px 4px;
+}
+
+.efu-export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.efu-export-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--efu-muted);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  background: var(--efu-white);
+}
+
+.efu-export-option:hover {
+  border-color: #8ab0c8;
+  background: #f5f9fc;
+}
+
+.efu-export-option input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--efu-dark);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.efu-export-option:has(input:checked) {
+  border-color: var(--efu-dark);
+  background: #eef4f8;
+  box-shadow: 0 0 0 3px rgba(20,72,100,0.08);
+}
+
+.efu-export-option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.efu-export-option-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--efu-dark);
+  line-height: 1.2;
+}
+
+.efu-export-option-desc {
+  font-size: 0.75rem;
+  color: #8aa0ae;
+  line-height: 1.4;
+}
+
+.efu-export-date-range {
+  background: var(--efu-light);
+  border: 1px solid var(--efu-muted);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.efu-export-date-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.efu-export-date-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--efu-dark);
+  flex: 1;
+}
+
+.efu-export-date-sep {
+  color: #8aa0ae;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.efu-export-date-input {
+  padding: 7px 10px;
+  border: 1.5px solid var(--efu-muted);
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--efu-text);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.efu-export-date-input:focus {
+  border-color: var(--efu-dark);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(20,72,100,0.1);
+}
+
+.efu-export-note {
+  font-size: 0.75rem;
+  color: #8aa0ae;
+  line-height: 1.5;
+  margin: 0 0 24px;
+  padding-left: 2px;
+}
+
+.efu-export-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--efu-muted);
+}
+
+.efu-export-cancel-btn {
+  color: #4a6070 !important;
+  border-color: var(--efu-muted) !important;
+  background: var(--efu-white) !important;
+}
+
+.efu-export-cancel-btn:hover {
+  border-color: #8aa0ae !important;
+  color: var(--efu-dark) !important;
+}
+
+.efu-export-download-btn {
+  background: var(--efu-dark) !important;
+  color: var(--efu-white) !important;
+  border-color: var(--efu-dark) !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+}
+
+.efu-export-download-btn:hover {
+  background: #1c6a88 !important;
+  border-color: #1c6a88 !important;
+}
+
+.efu-export-download-btn .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #fff;
+}

@@ -9,6 +9,7 @@ class EFU_SJT_Admin {
 		add_action( 'wp_ajax_efu_sjt_save_questions',   [ __CLASS__, 'ajax_save_questions' ] );
 		add_action( 'wp_ajax_efu_sjt_delete_submission', [ __CLASS__, 'ajax_delete_submission' ] );
 		add_action( 'wp_ajax_efu_sjt_export_csv',        [ __CLASS__, 'export_csv' ] );
+		add_action( 'wp_ajax_efu_sjt_export_excel',      [ __CLASS__, 'export_excel' ] );
 		add_action( 'wp_ajax_efu_sjt_save_sheets',       [ __CLASS__, 'ajax_save_sheets' ] );
 		add_action( 'wp_ajax_efu_sjt_push_headers',      [ __CLASS__, 'ajax_push_headers' ] );
 		add_action( 'wp_ajax_efu_sjt_sync_all',          [ __CLASS__, 'ajax_sync_all' ] );
@@ -341,6 +342,83 @@ class EFU_SJT_Admin {
 		}
 		fclose( $out );
 		exit;
+	}
+
+	public static function export_excel() {
+		check_ajax_referer( 'efu_sjt_admin', 'nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorized' );
+
+		$range_type = sanitize_text_field( $_GET['range_type'] ?? 'all' );
+
+		$filters = [
+			'date_from'  => '',
+			'date_to'    => '',
+			'gender'     => '',
+			'department' => '',
+			'level'      => '',
+		];
+
+		if ( $range_type === 'range' ) {
+			$filters['date_from'] = sanitize_text_field( $_GET['date_from'] ?? '' );
+			$filters['date_to']   = sanitize_text_field( $_GET['date_to'] ?? '' );
+		}
+
+		$rows       = EFU_SJT_Submission::get_all_for_export( $filters );
+		$assessment = EFU_SJT_Scorer::load_assessment();
+
+		// ── Build column headers & type hints ─────────────────────────────────────
+		$headers = [ 'ID', 'Name', 'Email', 'Age', 'Gender', 'Department', 'Submitted At', 'Overall Score', 'Overall Level' ];
+		$types   = [ 'number', 'string', 'string', 'number', 'string', 'string', 'string', 'decimal', 'string' ];
+
+		if ( $assessment && ! empty( $assessment['pillars'] ) ) {
+			foreach ( $assessment['pillars'] as $pillar ) {
+				$pn        = (int) ( $pillar['order'] ?? 1 );
+				$headers[] = 'Pillar ' . $pn . ': ' . $pillar['label'] . ' Score';
+				$types[]   = 'decimal';
+				foreach ( $pillar['competencies'] as $comp ) {
+					$headers[] = 'P' . $pn . ' | ' . $comp['label'] . ' Score';
+					$types[]   = 'decimal';
+				}
+			}
+		}
+
+		// ── Build rows ────────────────────────────────────────────────────────────
+		$writer = new EFU_SJT_XLSX_Writer();
+		$writer->set_headers( $headers, $types );
+
+		foreach ( $rows as $row ) {
+			$pillar_scores     = json_decode( $row->pillar_scores ?? '{}', true ) ?: [];
+			$competency_scores = json_decode( $row->scores ?? '{}', true ) ?: [];
+
+			$data = [
+				$row->id,
+				$row->name,
+				$row->email,
+				$row->age,
+				$row->gender,
+				$row->department,
+				$row->submitted_at,
+				$row->overall_score,
+				$row->overall_level,
+			];
+
+			if ( $assessment && ! empty( $assessment['pillars'] ) ) {
+				foreach ( $assessment['pillars'] as $pillar ) {
+					$data[] = isset( $pillar_scores[ $pillar['id'] ] )
+						? round( (float) $pillar_scores[ $pillar['id'] ], 4 )
+						: 0;
+					foreach ( $pillar['competencies'] as $comp ) {
+						$data[] = isset( $competency_scores[ $comp['id'] ] )
+							? round( (float) $competency_scores[ $comp['id'] ], 4 )
+							: 0;
+					}
+				}
+			}
+
+			$writer->add_row( $data );
+		}
+
+		$writer->send( 'efu-sjt-submissions-' . gmdate( 'Y-m-d' ) . '.xlsx' );
 	}
 
 	public static function ajax_save_sheets() {

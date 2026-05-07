@@ -153,12 +153,7 @@ if ( ! empty( $stats['levels'] ) ) {
 	$top_level_class = $card_class_map[ $top_level ] ?? '';
 }
 
-$admin_nonce   = wp_create_nonce( 'efu_sjt_admin' );
-$export_params = array_merge( $filters, [
-	'action' => 'efu_sjt_export_csv',
-	'nonce'  => $admin_nonce,
-] );
-$export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) );
+$admin_nonce = wp_create_nonce( 'efu_sjt_admin' );
 ?>
 <div class="wrap efu-admin-wrap">
 
@@ -220,10 +215,75 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 			<div class="efu-filter-actions">
 				<button type="submit" class="button button-primary">Filter</button>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=efu-sjt-assessment' ) ); ?>" class="button">Reset</a>
-				<a href="<?php echo esc_url( $export_url ); ?>" class="button efu-export-btn">&#x2193;&nbsp;Export CSV</a>
+				<button type="button" id="efu-open-export-modal" class="button efu-export-btn">&#x2193;&nbsp;Export Excel</button>
 			</div>
 		</div>
 	</form>
+
+	<!-- ── Export Modal ───────────────────────────────── -->
+	<div id="efu-export-modal" class="efu-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="efu-export-modal-title">
+		<div class="efu-modal-overlay"></div>
+		<div class="efu-modal-box efu-export-modal-box">
+			<div class="efu-export-modal-header">
+				<div class="efu-export-modal-icon">
+					<span class="dashicons dashicons-download"></span>
+				</div>
+				<div>
+					<h2 id="efu-export-modal-title" class="efu-export-modal-title">Export to Excel</h2>
+					<p class="efu-export-modal-sub">Choose which submissions to include</p>
+				</div>
+				<button class="efu-export-modal-close" aria-label="Close">&times;</button>
+			</div>
+
+			<div class="efu-export-modal-body">
+				<div class="efu-export-options">
+
+					<label class="efu-export-option">
+						<input type="radio" name="efu_export_range" value="all" checked>
+						<span class="efu-export-option-content">
+							<span class="efu-export-option-title">All Entries</span>
+							<span class="efu-export-option-desc">Export every submission in the database</span>
+						</span>
+					</label>
+
+					<label class="efu-export-option">
+						<input type="radio" name="efu_export_range" value="range">
+						<span class="efu-export-option-content">
+							<span class="efu-export-option-title">Date Range</span>
+							<span class="efu-export-option-desc">Limit export to a specific date window</span>
+						</span>
+					</label>
+
+				</div>
+
+				<div id="efu-export-date-range" class="efu-export-date-range" style="display:none;">
+					<div class="efu-export-date-row">
+						<label class="efu-export-date-label">
+							From
+							<input type="date" id="efu-export-date-from" class="efu-export-date-input">
+						</label>
+						<span class="efu-export-date-sep">&mdash;</span>
+						<label class="efu-export-date-label">
+							To
+							<input type="date" id="efu-export-date-to" class="efu-export-date-input">
+						</label>
+					</div>
+				</div>
+
+				<p class="efu-export-note">
+					The exported file includes all pillar scores, competency scores, and overall results per participant.
+				</p>
+			</div>
+
+			<div class="efu-export-modal-footer">
+				<button type="button" class="button efu-export-cancel-btn">Cancel</button>
+				<button type="button" id="efu-do-export" class="button efu-export-download-btn">
+					<span class="dashicons dashicons-download"></span>
+					Download Excel
+				</button>
+			</div>
+		</div>
+	</div>
 
 	<!-- ── Modal ──────────────────────────────────────── -->
 	<div id="efu-submission-modal" class="efu-modal" style="display:none;">
@@ -274,8 +334,10 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 
 <script>
 (function(){
-	const nonce = <?php echo wp_json_encode( $admin_nonce ); ?>;
+	const nonce   = <?php echo wp_json_encode( $admin_nonce ); ?>;
+	const ajaxBase = <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>;
 
+	// ── Submission delete ──────────────────────────────────────────────────────
 	document.querySelectorAll('.efu-btn-delete').forEach(btn => {
 		btn.addEventListener('click', e => {
 			e.preventDefault();
@@ -291,12 +353,13 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 		});
 	});
 
+	// ── Submission view modal ──────────────────────────────────────────────────
 	document.querySelectorAll('.efu-btn-view').forEach(btn => {
 		btn.addEventListener('click', e => {
 			e.preventDefault();
 			document.getElementById('efu-modal-content').innerHTML = '<div class="efu-modal-loading"><div class="efu-modal-spinner"></div></div>';
 			document.getElementById('efu-submission-modal').style.display = 'flex';
-			fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=efu_sjt_get_submission&nonce=' + nonce + '&id=' + btn.dataset.id)
+			fetch(ajaxBase + '?action=efu_sjt_get_submission&nonce=' + nonce + '&id=' + btn.dataset.id)
 				.then(r => r.json())
 				.then(d => {
 					if (d.success) document.getElementById('efu-modal-content').innerHTML = d.data.html;
@@ -305,9 +368,54 @@ $export_url = admin_url( 'admin-ajax.php?' . http_build_query( $export_params ) 
 		});
 	});
 
-	const closeModal = () => { document.getElementById('efu-submission-modal').style.display = 'none'; };
-	document.querySelector('.efu-modal-close')?.addEventListener('click', closeModal);
-	document.querySelector('.efu-modal-overlay')?.addEventListener('click', closeModal);
-	document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+	const closeSubmissionModal = () => { document.getElementById('efu-submission-modal').style.display = 'none'; };
+	document.querySelector('#efu-submission-modal .efu-modal-close')?.addEventListener('click', closeSubmissionModal);
+	document.querySelector('#efu-submission-modal .efu-modal-overlay')?.addEventListener('click', closeSubmissionModal);
+
+	// ── Export modal ───────────────────────────────────────────────────────────
+	const exportModal     = document.getElementById('efu-export-modal');
+	const exportDateRange = document.getElementById('efu-export-date-range');
+
+	const openExportModal  = () => { exportModal.style.display = 'flex'; };
+	const closeExportModal = () => { exportModal.style.display = 'none'; };
+
+	document.getElementById('efu-open-export-modal')?.addEventListener('click', openExportModal);
+	exportModal.querySelector('.efu-export-modal-close')?.addEventListener('click', closeExportModal);
+	exportModal.querySelector('.efu-export-cancel-btn')?.addEventListener('click', closeExportModal);
+	exportModal.querySelector('.efu-modal-overlay')?.addEventListener('click', closeExportModal);
+
+	// Toggle date range inputs
+	exportModal.querySelectorAll('input[name="efu_export_range"]').forEach(radio => {
+		radio.addEventListener('change', () => {
+			exportDateRange.style.display = radio.value === 'range' ? 'block' : 'none';
+		});
+	});
+
+	// Download button
+	document.getElementById('efu-do-export')?.addEventListener('click', () => {
+		const rangeType = exportModal.querySelector('input[name="efu_export_range"]:checked')?.value ?? 'all';
+		const params    = new URLSearchParams({
+			action:     'efu_sjt_export_excel',
+			nonce:      nonce,
+			range_type: rangeType,
+		});
+
+		if ( rangeType === 'range' ) {
+			const from = document.getElementById('efu-export-date-from').value;
+			const to   = document.getElementById('efu-export-date-to').value;
+			if ( from ) params.set('date_from', from);
+			if ( to )   params.set('date_to', to);
+		}
+
+		window.location.href = ajaxBase + '?' + params.toString();
+		closeExportModal();
+	});
+
+	// Close any modal on Escape
+	document.addEventListener('keydown', e => {
+		if ( e.key !== 'Escape' ) return;
+		closeSubmissionModal();
+		closeExportModal();
+	});
 })();
 </script>
