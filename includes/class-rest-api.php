@@ -139,7 +139,7 @@ class EFU_SJT_REST_API {
 
 		if ( EFU_SJT_Submission::email_submitted_recently( $email ) ) {
 			return new WP_REST_Response(
-				[ 'success' => false, 'message' => 'You have already submitted an assessment in the last 24 hours. Please try again later.' ],
+				[ 'success' => false, 'message' => 'You have already submitted an assessment.' ],
 				429
 			);
 		}

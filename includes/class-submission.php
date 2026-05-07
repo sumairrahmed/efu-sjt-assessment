@@ -40,7 +40,7 @@ class EFU_SJT_Submission {
 				"SELECT COUNT(*) FROM %i WHERE email = %s AND submitted_at >= %s",
 				self::table(),
 				sanitize_email( $email ),
-				gmdate( 'Y-m-d H:i:s', strtotime( '-24 hours' ) )
+				gmdate( 'Y-m-d H:i:s', strtotime( '-240 hours' ) )
 			)
 		);
 

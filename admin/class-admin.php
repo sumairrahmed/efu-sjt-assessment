@@ -76,6 +76,15 @@ class EFU_SJT_Admin {
 			null
 		);
 
+		wp_enqueue_style( 'dashicons' );
+
+		wp_enqueue_style(
+			'efu-sjt-admin',
+			EFU_SJT_PLUGIN_URL . 'assets/css/admin.css',
+			[ 'efu-poppins', 'dashicons' ],
+			EFU_SJT_VERSION
+		);
+		
 		wp_enqueue_style(
 			'efu-sjt-admin',
 			EFU_SJT_PLUGIN_URL . 'assets/css/admin.css',
